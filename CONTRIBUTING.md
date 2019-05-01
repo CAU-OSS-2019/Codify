@@ -75,7 +75,7 @@ HTML, CSS, JavaScript, XML, Python 등 모든 텍스트 파일의 문자셋은 B
 그래야 나중에 명령이 추가될 경우 수정하기 편리합니다.
 
     if (flag1) return false;    // WRONG
-    if (flag2) {               // RIGHT
+    if (flag2) {                // RIGHT
         return true;
     }
 
@@ -158,7 +158,7 @@ HTML, CSS, JavaScript, XML, Python 등 모든 텍스트 파일의 문자셋은 B
 
     크롬 최신 버전에서 스크립트 오류 해결   // RIGHT
     Foo 클래스에 bar() 메소드 추가       // RIGHT
-    서버 통신 에러 나는 거 고쳤어요. 헣~^^  // WRONG (격식 없는 표현)
+    서버 통신 에러 나는 거 고쳤어요. 헣~^^ // WRONG (격식 없는 표현)
     함수 개선                          // WRONG (두리뭉실한 표현)
 
 ### 기타
