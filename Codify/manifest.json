@@ -1,7 +1,7 @@
 {
   "name": "Codify",
   "version": "1.0",
-  "description": "Build an Extension!",
+  "description": "Auto Code Detection and Highlight + Edit and Compile Code on Chrome",
   "permissions": ["contextMenus", "storage"],
   "background": {
     "scripts": ["background.js"],
