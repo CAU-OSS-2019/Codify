@@ -2,14 +2,7 @@
 
 //$(document).ready(function(){
   chrome.storage.sync.get('storagedCode', function(item){
-    if(item.storagedCode == 'undefined'){
-      codeTextArea.value = "";
-      console.log("if");
-   }
-    else{
       codeTextArea.value = item.storagedCode;
-      console.log("else");
-    }
     //chrome.storage.sync.set({'storagedCode': codeTextArea.value});
   });
 //});
