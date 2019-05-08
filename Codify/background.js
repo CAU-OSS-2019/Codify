@@ -1,8 +1,11 @@
 'use strict';
 
 chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({color: '#3aa757'}, function() {
-    console.log("The color is green.");
+  chrome.storage.sync.set({'storagedCode': ""});
+  chrome.contextMenus.create({
+    "id": "appendCode",
+    "title": "Append to Codify",
+    "contexts": ["selection"]
   });
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     chrome.declarativeContent.onPageChanged.addRules([{
@@ -15,13 +18,6 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
-var contextMenuItem = {
-  "id": "appendCode",
-  "title": "Append to Codify",
-  "contexts": ["selection"]
-};
-
-chrome.contextMenus.create(contextMenuItem);
 chrome.contextMenus.onClicked.addListener(function(clickData){
   if (clickData.menuItemId === "appendCode"){
     chrome.storage.sync.set({'storagedCode': clickData.selectionText});
