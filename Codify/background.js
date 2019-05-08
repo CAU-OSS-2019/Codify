@@ -14,3 +14,16 @@ chrome.runtime.onInstalled.addListener(function() {
     }]);
   });
 });
+
+var contextMenuItem = {
+  "id": "appendCode",
+  "title": "Append to Codify",
+  "contexts": ["selection"]
+};
+
+chrome.contextMenus.create(contextMenuItem);
+chrome.contextMenus.onClicked.addListener(function(clickData){
+  if (clickData.menuItemId === "appendCode"){
+    chrome.storage.sync.set({'storagedCode': clickData.selectionText});
+  }
+});

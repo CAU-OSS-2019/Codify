@@ -1,5 +1,19 @@
 'use strict';
 
+//$(document).ready(function(){
+  chrome.storage.sync.get('storagedCode', function(item){
+    if(item.storagedCode == 'undefined'){
+      codeTextArea.value = "";
+      console.log("if");
+   }
+    else{
+      codeTextArea.value = item.storagedCode;
+      console.log("else");
+    }
+    //chrome.storage.sync.set({'storagedCode': codeTextArea.value});
+  });
+//});
+
 let codeTextArea = document.getElementById('code');
 let resultTextArea = document.getElementById('result');
 let compileButton = document.getElementById('compile');
@@ -27,4 +41,5 @@ codeTextArea.onkeydown = function(element) {
  compileButton.onclick = function(){
    var code = document.getElementById('code').value;
    resultTextArea.value = code;
+   chrome.storage.sync.set({'storagedCode': codeTextArea.value});
  };
