@@ -2,7 +2,7 @@
   "name": "Codify",
   "version": "1.0",
   "description": "Build an Extension!",
-  "permissions": ["contextMenus", "storage", "declarativeContent"],
+  "permissions": ["contextMenus", "storage"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
