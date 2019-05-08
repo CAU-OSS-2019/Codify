@@ -1,7 +1,11 @@
 'use strict';
 
+// executed when chrome extension is first installed
 chrome.runtime.onInstalled.addListener(function() {
+  // initialize storaged code of chrome storage
   chrome.storage.sync.set({'storagedCode': ""});
+
+  // create 'Append to Codify' contextMenus
   chrome.contextMenus.create({
     "id": "appendCode",
     "title": "Append to Codify",
@@ -9,6 +13,7 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
+// append selected(dragged) code to popup
 chrome.contextMenus.onClicked.addListener(function(clickData){
   if (clickData.menuItemId === "appendCode"){
     chrome.storage.sync.set({'storagedCode': clickData.selectionText});

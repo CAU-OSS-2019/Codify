@@ -1,5 +1,6 @@
 'use strict';
 
+// get storaged code from chrome storage
 //$(document).ready(function(){
   chrome.storage.sync.get('storagedCode', function(item){
       codeTextArea.value = item.storagedCode;
@@ -34,6 +35,7 @@ codeTextArea.onkeydown = function(element) {
   }
 };
 
+// compile code in codeTextArea and print the result on resultTextArea
  compileButton.onclick = function(){
   let resultTextArea = document.getElementById('result');
   var code = codeTextArea.value;
