@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+      <meta charset="utf-8" />
+        <style>
+          body  {
+            width: 550px;
+            height: 400px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 2vw;
+          }
+        </style>
+  </head>
+  <body>
+    <!-- <form action="" method="post"> -->
+      <div>
+        <label for="code">CODE:</label>
+        <textarea id="code" rows="17" cols="70" style="resize: none" name="user_code"></textarea>
+      </div>
+
+      <div class="button">
+        <button id="compile" type="submit">Compile your code</button>
+      </div>
+
+      <div>
+        <label for="result">RESULT:</label>
+        <textarea id="result" rows="10" cols="70" readonly="readonly" style="resize: none"></textarea>
+      </div>
+    <!-- </form> -->
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+/*
+form {
+    margin: 0 auto;
+    width: 400px;
+    padding: 1em;
+    border: 1px solid #CCC;
+    border-radius: 1em;
+}
+*/
+
+body div + div {
+    margin-top: 1em;
+}
+
+label {
+    display: inline-block;
+    width: 50px;
+    text-align: right;
+}
+
+textarea {
+    font: 1em sans-serif;
+    -moz-box-sizing: borer-box;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    vertical-align: top;
+}
+
+.button {
+    padding-left: 60px;
+}
+
+button {
+    margin-left: .5em;
+}
+
