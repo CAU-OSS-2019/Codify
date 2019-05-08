@@ -3,16 +3,20 @@
 //$(document).ready(function(){
   chrome.storage.sync.get('storagedCode', function(item){
       codeTextArea.value = item.storagedCode;
-    //chrome.storage.sync.set({'storagedCode': codeTextArea.value});
   });
 //});
 
 let codeTextArea = document.getElementById('code');
-let resultTextArea = document.getElementById('result');
 let compileButton = document.getElementById('compile');
 
+// save content of codeTextArea when user change it
+codeTextArea.onchange = function(){
+  chrome.storage.sync.set({storagedCode: codeTextArea.value});
+};
+
+// facilitate 'tab' key in textarea
 codeTextArea.onkeydown = function(element) {
-  if (element.keyCode === 9) { // tab was pressed
+  if (element.keyCode === 9) {
 
       // get caret position/selection
       var val = this.value,
@@ -27,12 +31,17 @@ codeTextArea.onkeydown = function(element) {
 
       // prevent the focus lose
       return false;
-
   }
 };
 
  compileButton.onclick = function(){
-   var code = document.getElementById('code').value;
-   resultTextArea.value = code;
-   chrome.storage.sync.set({'storagedCode': codeTextArea.value});
+  let resultTextArea = document.getElementById('result');
+  var code = codeTextArea.value;
+  var compileResult = "Result";
+
+  //************************ */
+  // compile 'code' and save result in variable 'compileResult'
+  //************************ */
+
+  resultTextArea.value = compileResult;
  };
