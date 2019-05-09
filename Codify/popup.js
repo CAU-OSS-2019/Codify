@@ -1,10 +1,9 @@
 'use strict';
 
-//$(document).ready(function(){
-  chrome.storage.sync.get('storagedCode', function(item){
-      codeTextArea.value = item.storagedCode;
-  });
-//});
+// get storaged code from chrome storage
+chrome.storage.sync.get('storagedCode', function(item){
+    codeTextArea.value = item.storagedCode;
+});
 
 let codeTextArea = document.getElementById('code');
 let compileButton = document.getElementById('compile');
@@ -15,7 +14,7 @@ codeTextArea.onchange = function(){
 };
 
 // facilitate 'tab' key in textarea
-codeTextArea.onkeydown = function(element) {
+codeTextArea.onkeydown = function(element){
   if (element.keyCode === 9) {
 
       // get caret position/selection
@@ -34,6 +33,7 @@ codeTextArea.onkeydown = function(element) {
   }
 };
 
+// compile code in codeTextArea and print the result on resultTextArea
  compileButton.onclick = function(){
   let resultTextArea = document.getElementById('result');
   var code = codeTextArea.value;
