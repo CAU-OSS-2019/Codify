@@ -1,42 +1,97 @@
+const TARGETADDRESS = 'http://127.0.0.1:3000';
+const INTERVAL = 500;
+const MAXTRY = 10;
+
 // return the data for compile
-const startCompiledRequestProcess = (lang, code) => {
-    return new Promise((resolve, reject)=>{
-        let xml_http = new XMLHttpRequest();
+const getIfCompileSuccess = (lang, code) => {
+    return new Promise(resolve => {
         let compile = JSON.stringify({
             "lang":lang,
             "code":code
         });
+        let result;
 
-        resolve({'xml_http': xml_http, 'compile': compile});
+        result = compileReq(compile)
+            .then(getReqResult);
+
+        resolve(result);
     });
 };
 
-// request to compile the input code from extension
-function compile_req_to_server(result){
-    return new  Promise( (resolve, reject)=>{
-        let compile = result.compile;
-        let xml_http = result.xml_http;
-        xml_http.open("POST", "http://127.0.0.1:3000/compile", true);
-        xml_http.setRequestHeader('content-type', 'application/json; charset=utf-8');
-        xml_http.send(compile);
+const compileReq = compile => {
+    return new Promise(resolve => {
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.open('POST', TARGETADDRESS + '/compile', true);
+        xmlHttp.setRequestHeader('content-type', 'application/json; charset=utf-8');
+        xmlHttp.send(compile);
 
-        resolve(xml_http);
+        resolve(xmlHttp);
     });
-}
+};
 
 // return json when the server response
-const getReqResult = xml_http =>{
+const getReqResult = xmlHttp =>{
     return new Promise( (resolve, reject)=> {
-        xml_http.onreadystatechange = function (e) {
-            if (xml_http.readyState === XMLHttpRequest.DONE) {
-                if (xml_http.status === 200) {
-                    let returnVal = JSON.parse(xml_http.responseText);
+        xmlHttp.onreadystatechange = function (e) {
+            if (xmlHttp.readyState === XMLHttpRequest.DONE) {
+                if (xmlHttp.status === 200) {
+                    let returnVal = JSON.parse(xmlHttp.responseText);
                     resolve(returnVal);
                 } else {
-                    console.log("Error!");
+                    reject('fail to get response from server');
+                    console.log(e);
                 }
             }
         };
+    });
+};
+
+const successToReqCompile = result => {
+    return new Promise((resolve, reject) => {
+        if(result.success !== false){
+            resolve({'id' : result.id, 'maxTry': MAXTRY, 'interval': INTERVAL});
+        }
+    });
+};
+
+const failToReqCompile = result => {
+    console.log(result);
+};
+
+const getCompileResult = data => {
+    return  reqCompiledResult(data.id)
+        .then(getReqResult)
+        .then(getResult => {
+            console.log(data);
+            console.log(getResult);
+            if(getResult.success === true){
+                console.log(1);
+                if(getResult.compile !== "WAIT"){
+                    return(getResult);
+                }else if( data.maxTry > 0){
+                    data.maxTry = data.maxTry - 1;
+                    setTimeout(() => {
+                        getCompileResult(data);
+                    }, data.interval);
+                }else {
+                    return('hello');
+                }
+            }else{
+                return('connection fail while getting the result of compile');
+            }
+        });
+};
+
+
+const reqCompiledResult = id => {
+    return new Promise((resolve, reject) => {
+        let xmlHttp = new XMLHttpRequest() ;
+        console.log(id);
+        console.log(TARGETADDRESS+'/result/'+id);
+        xmlHttp.open('GET', TARGETADDRESS+'/result/'+id, true);
+        xmlHttp.send();
+
+        resolve(xmlHttp);
     });
 };
 
@@ -48,8 +103,10 @@ window.onload = () => {
         let code = document.getElementById('code').value;
 
         // specify whether or not the compile request fails
-        let id = startCompiledRequestProcess(lang, code)
-            .then(compile_req_to_server)
-            .then(getReqResult);
+        let id = getIfCompileSuccess(lang, code)
+            .then(successToReqCompile)
+            .then(getCompileResult)
+            .catch(failToReqCompile);
+        console.log(id);
     });
 };
