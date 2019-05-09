@@ -16,6 +16,10 @@ chrome.runtime.onInstalled.addListener(function() {
 // append selected(dragged) code to popup
 chrome.contextMenus.onClicked.addListener(function(clickData){
   if (clickData.menuItemId === "appendCode"){
-    chrome.storage.sync.set({'storagedCode': clickData.selectionText});
+    chrome.tabs.executeScript(null, {
+      code: "window.getSelection().toString();"
+    }, function(selection){
+      chrome.storage.sync.set({'storagedCode': selection});
+    });
   }
 });
