@@ -4,12 +4,16 @@ const TARGETADDRESS = 'http://127.0.0.1:3000';
 const INTERVAL = 500;
 const MAXTRY = 20;
 
-let connector = {};
+// use when need to sleep by await function
+const timeout = interval =>{
+    return new Promise( resolve => {
+        setTimeout(resolve, interval);
+    });
+};
 
 // return Promise object with json which is the server send
 // use both function to ask server to compile and to get the compile result
-const getReqResponse = async xmlHttp =>{
-
+const getReqResponse = xmlHttp =>{
     return new Promise( (resolve, reject)=> {
         xmlHttp.onreadystatechange = err => {
             if (xmlHttp.readyState === XMLHttpRequest.DONE) {
@@ -25,19 +29,55 @@ const getReqResponse = async xmlHttp =>{
     });
 };
 
-// return the data for compile
-connector.compileReq = (lang, code) => {
+// return Promise object which has the compile result
+const compileReqAndGetResult = async (lang, code) => {
+    try {
+        let id = await compileReq(lang,code);
+        return await getCompileResult(id);
+    } catch (err){
+        return err;
+    }
+};
+
+// request to compile code
+const compileReq = async (lang, code) => {
     let compile = JSON.stringify({
         "lang":lang,
         "code":code
     });
-    let result;
 
-    result = reqCompile(compile)
-        .then(getReqResponse)
-        .then(reqCompileSuccess);
+    try{
+        let xmlHttpToReqCompile = await reqCompile(compile);
+        let data = await getReqResponse(xmlHttpToReqCompile);
+        // return id value to request the result of compile
+        return await reqCompileSuccess(data);
+    } catch (err) {
+        return err;
+    }
+};
 
-    return(result);
+// get compiled result of that code
+const getCompileResult = async id => {
+    try {
+        // variable for compile result from server
+        let compileResult;
+        // variable for count the number of trial
+        let i = 0;
+        // repeat until the condition is met
+        while(true) {
+            let xmlHttpToGetCompileResult = await reqCompiledResult(id);
+            compileResult = await getReqResponse(xmlHttpToGetCompileResult);
+            let result = await checkRetryCondition(compileResult, ++i);
+            if (typeof(result) === 'string' && !result) {
+                break;
+            }
+            // delay for to server  with some interval
+            await timeout(INTERVAL);
+        }
+        return compileResult;
+    } catch (err) {
+        return err;
+    }
 };
 
 // request server to compile
@@ -52,43 +92,16 @@ const reqCompile = compile => {
     });
 };
 
-// check if compile request success
+// check if compile request success and return id for request the result
 const reqCompileSuccess = result => {
     return new Promise((resolve, reject) => {
         // success
         if(result.success !== false){
-            resolve({'id' : result.id, 'maxTry': MAXTRY, 'interval': INTERVAL});
+            resolve(result.id);
         }
         // fail
         reject('Compile request fail');
     });
-};
-
-// return compile output
-connector.getCompileResult = data => {
-    // request is the compile over
-    return  reqCompiledResult(data.id)
-        .then(getReqResponse)
-        .then(getResult => {
-            return new Promise((resolve, reject) => {
-                // response arrive
-                if(getResult.success === true){
-                    // if compile status is not 'WAIT' return the Promise
-                    if(getResult.compile !== "WAIT"){
-                        resolve(getResult);
-                    }else if( data.maxTry > 0){
-                        data.maxTry = data.maxTry - 1;
-                        setTimeout(() => {
-                            connector.getCompileResult(data);
-                        }, data.interval);
-                    }else {
-                        reject('Compile Time Over');
-                    }
-                }else{
-                    reject('connection fail while getting the result of compile');
-                }
-            });
-        });
 };
 
 // ask is the compile end
@@ -102,4 +115,26 @@ const reqCompiledResult = id => {
     });
 };
 
-export {connector};
+// check the condition of the repeat
+const checkRetryCondition = (result, trys) => {
+    return new Promise((resolve, reject) => {
+        // response arrive
+        if(result.success === true){
+            // if compile status is not 'WAIT', then don't retry
+            if(result.compile !== "WAIT") {
+                resolve(false);
+            } else if(trys < MAXTRY) {
+                resolve(true);
+            }
+            // if maximum number of trial is over, stop asking.
+            else {
+                reject('compile time over');
+            }
+        }else{
+            reject('connection fail while getting the result of compile');
+        }
+    });
+};
+
+
+export default compileReqAndGetResult;
