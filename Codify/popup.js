@@ -1,11 +1,9 @@
 'use strict';
 
 // get storaged code from chrome storage
-//$(document).ready(function(){
-  chrome.storage.sync.get('storagedCode', function(item){
-      codeTextArea.value = item.storagedCode;
-  });
-//});
+chrome.storage.sync.get('storagedCode', function(item){
+    codeTextArea.value = item.storagedCode;
+});
 
 let codeTextArea = document.getElementById('code');
 let compileButton = document.getElementById('compile');
@@ -16,7 +14,7 @@ codeTextArea.onchange = function(){
 };
 
 // facilitate 'tab' key in textarea
-codeTextArea.onkeydown = function(element) {
+codeTextArea.onkeydown = function(element){
   if (element.keyCode === 9) {
 
       // get caret position/selection
