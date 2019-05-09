@@ -24,18 +24,29 @@ textNodes = textNodesUnder(node);
 
 var mode = 0;
 var ok = false;
-
+var codeText = '';
 for (var i = 0; i < textNodes.length; i++) {
     var tt = textNodes[i];
     var parent_tt = tt.parentNode;
+    
     if (mode === 0) {
-        if (tt.nodeValue.includes("#include <stdio.h>")) { ok = true; mode++; }
+        if (tt.nodeValue.includes("#include <stdio.h>")) {
+             ok = true; mode++; codeText += tt.nodeValue + '\n';
+             console.log(parent_tt)
+        }
     }
     else if (mode === 1) {
-        if (tt.nodeValue.includes("}")) mode++;
+        if (tt.nodeValue.includes("}")) {
+            mode++;
+        }
+        codeText += tt.nodeValue + '\n'; 
     }
     else if (mode === 2) {
-        if (tt.nodeValue.includes("}")) mode++;
+        if (tt.nodeValue.includes("}")) {
+            mode++;
+        }
+        codeText += tt.nodeValue + '\n';
+        //parent_tt.        
     }
     else {
         ok = false;
@@ -53,7 +64,7 @@ for (var i = 0; i < textNodes.length; i++) {
         tt.replaceWith(new_parent);
     }
 }
-
+//console.log(codeText);
 var script = document.createElement('script');
 script.onload = function () {
     document.head.appendChild(script);
