@@ -7,16 +7,18 @@ const MAXTRY = 20;
 let connector = {};
 
 // return Promise object with json which is the server send
-const getReqResponse = xmlHttp =>{
+// use both function to ask server to compile and to get the compile result
+const getReqResponse = async xmlHttp =>{
+
     return new Promise( (resolve, reject)=> {
-        xmlHttp.onreadystatechange = function (e) {
+        xmlHttp.onreadystatechange = err => {
             if (xmlHttp.readyState === XMLHttpRequest.DONE) {
                 if (xmlHttp.status === 200) {
                     let returnVal = JSON.parse(xmlHttp.responseText);
                     resolve(returnVal);
                 } else {
                     reject('fail to get response from server');
-                    console.log(e);
+                    console.log(err);
                 }
             }
         };
@@ -24,22 +26,22 @@ const getReqResponse = xmlHttp =>{
 };
 
 // return the data for compile
-connector.getIfCompileSuccess = (lang, code) => {
+connector.compileReq = (lang, code) => {
     let compile = JSON.stringify({
         "lang":lang,
         "code":code
     });
     let result;
 
-    result = compileReq(compile)
+    result = reqCompile(compile)
         .then(getReqResponse)
-        .then(successToReqCompile);
+        .then(reqCompileSuccess);
 
     return(result);
 };
 
 // request server to compile
-const compileReq = compile => {
+const reqCompile = compile => {
     return new Promise(resolve => {
         let xmlHttp = new XMLHttpRequest();
         xmlHttp.open('POST', TARGETADDRESS + '/compile', true);
@@ -51,23 +53,14 @@ const compileReq = compile => {
 };
 
 // check if compile request success
-const successToReqCompile = result => {
+const reqCompileSuccess = result => {
     return new Promise((resolve, reject) => {
+        // success
         if(result.success !== false){
             resolve({'id' : result.id, 'maxTry': MAXTRY, 'interval': INTERVAL});
         }
+        // fail
         reject('Compile request fail');
-    });
-};
-
-// ask is the compile end
-const reqCompiledResult = id => {
-    return new Promise(resolve=> {
-        let xmlHttp = new XMLHttpRequest() ;
-        xmlHttp.open('GET', TARGETADDRESS+'/result/'+id, true);
-        xmlHttp.send();
-
-        resolve(xmlHttp);
     });
 };
 
@@ -86,7 +79,7 @@ connector.getCompileResult = data => {
                     }else if( data.maxTry > 0){
                         data.maxTry = data.maxTry - 1;
                         setTimeout(() => {
-                            getCompileResult(data);
+                            connector.getCompileResult(data);
                         }, data.interval);
                     }else {
                         reject('Compile Time Over');
@@ -96,6 +89,17 @@ connector.getCompileResult = data => {
                 }
             });
         });
+};
+
+// ask is the compile end
+const reqCompiledResult = id => {
+    return new Promise(resolve=> {
+        let xmlHttp = new XMLHttpRequest() ;
+        xmlHttp.open('GET', TARGETADDRESS+'/result/'+id, true);
+        xmlHttp.send();
+
+        resolve(xmlHttp);
+    });
 };
 
 export {connector};
