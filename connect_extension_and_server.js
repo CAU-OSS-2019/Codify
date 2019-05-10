@@ -1,35 +1,54 @@
 'use strict';
+/**
+ * @author Lee seung chan
+ * @brief connect extension program with server
+ * @file connect_extension_and_server.js
+ * @todo need to organize functions
+ */
 
-const TARGETADDRESS = 'http://127.0.0.1:3000';
+const TARGET_ADDRESS = 'http://127.0.0.1:3000';
 const INTERVAL = 500;
-const MAXTRY = 20;
+const MAX_TRY = 20;
 
-// use when need to sleep by await function
-const timeout = interval =>{
+/**
+ * @brief execute Promise.resolve() function after interval.
+ * @param interval
+ * @returns {Promise<Promise.resolve>}
+ */
+const timeout = interval => {
     return new Promise( resolve => {
         setTimeout(resolve, interval);
     });
 };
 
-// return Promise object with json which is the server send
-// use both function to ask server to compile and to get the compile result
-const getReqResponse = xmlHttp =>{
-    return new Promise( (resolve, reject)=> {
+/**
+ * @brief get result of the request from server
+ * @param xmlHttp
+ * @returns {Promise<json>}
+ */
+const getReqResponse = xmlHttp => {
+    return new Promise( (resolve, reject)   => {
         xmlHttp.onreadystatechange = err => {
             if (xmlHttp.readyState === XMLHttpRequest.DONE) {
                 if (xmlHttp.status === 200) {
                     let returnVal = JSON.parse(xmlHttp.responseText);
                     resolve(returnVal);
                 } else {
-                    reject('fail to get response from server');
-                    console.log(err);
+                    reject(new Error(err));
                 }
             }
         };
     });
 };
 
-// return Promise object which has the compile result
+/**
+ * @brief request to compile and get the result of the compile
+ * request using compileReq function with language data(like 'c', 'c++')
+ * and code to compile and get result using getCompile function.
+ * @param lang
+ * @param code
+ * @returns {Promise<json>}
+ */
 const compileReqAndGetResult = async (lang, code) => {
     try {
         let id = await compileReq(lang,code);
@@ -39,14 +58,17 @@ const compileReqAndGetResult = async (lang, code) => {
     }
 };
 
-// request to compile code
+/**
+ * @brief request id value from server
+ * request using reqCompile to send to server and get result using
+ * getReqResponse to get json. determine if
+ * @param lang
+ * @param code
+ * @returns {Promise<int>}
+ */
 const compileReq = async (lang, code) => {
-    let compile = JSON.stringify({
-        "lang":lang,
-        "code":code
-    });
-
     try{
+        let compile = JSON.stringify({'lang':lang, 'code':code});
         let xmlHttpToReqCompile = await reqCompile(compile);
         let data = await getReqResponse(xmlHttpToReqCompile);
         // return id value to request the result of compile
@@ -56,7 +78,11 @@ const compileReq = async (lang, code) => {
     }
 };
 
-// get compiled result of that code
+/**
+ * @brief get compiled result of that code
+ * @param id
+ * @returns {Promise<json>}
+ */
 const getCompileResult = async id => {
     try {
         // variable for compile result from server
@@ -64,11 +90,11 @@ const getCompileResult = async id => {
         // variable for count the number of trial
         let i = 0;
         // repeat until the condition is met
-        while(true) {
+        while (true) {
             let xmlHttpToGetCompileResult = await reqCompiledResult(id);
             compileResult = await getReqResponse(xmlHttpToGetCompileResult);
             let result = await checkRetryCondition(compileResult, ++i);
-            if (typeof(result) === 'string' && !result) {
+            if (typeof (result) === 'string' && !result) {
                 break;
             }
             // delay for to server  with some interval
@@ -80,19 +106,29 @@ const getCompileResult = async id => {
     }
 };
 
-// request server to compile
+/**
+ * @brief request server to compile
+ * @param compile
+ * @returns {Promise<XMLHttpRequest object>}
+ */
 const reqCompile = compile => {
     return new Promise(resolve => {
         let xmlHttp = new XMLHttpRequest();
-        xmlHttp.open('POST', TARGETADDRESS + '/compile', true);
-        xmlHttp.setRequestHeader('content-type', 'application/json; charset=utf-8');
+        xmlHttp.open('POST', TARGET_ADDRESS + '/compile', true);
+        xmlHttp.setRequestHeader(
+            'content-type',
+            'application/json; charset=utf-8'
+        );
         xmlHttp.send(compile);
-
         resolve(xmlHttp);
     });
 };
 
-// check if compile request success and return id for request the result
+/**
+ * @brief check if compile request success and return id for request the result
+ * @param result
+ * @returns {Promise<int>}
+ */
 const reqCompileSuccess = result => {
     return new Promise((resolve, reject) => {
         // success
@@ -100,38 +136,46 @@ const reqCompileSuccess = result => {
             resolve(result.id);
         }
         // fail
-        reject('Compile request fail');
+        reject(new Error('Compile request fail'));
     });
 };
 
-// ask is the compile end
+/**
+ * @brief ask is the compile end
+ * @param id
+ * @returns {Promise<XMLHttpRequest object>}
+ */
 const reqCompiledResult = id => {
     return new Promise(resolve=> {
         let xmlHttp = new XMLHttpRequest() ;
-        xmlHttp.open('GET', TARGETADDRESS+'/result/'+id, true);
+        xmlHttp.open('GET', TARGET_ADDRESS+'/result/'+id, true);
         xmlHttp.send();
-
         resolve(xmlHttp);
     });
 };
 
-// check the condition of the repeat
-const checkRetryCondition = (result, trys) => {
+/**
+ * @brief check the condition of the repeat
+ * @param result
+ * @param trial
+ * @returns {Promise<boolean>}
+ */
+const checkRetryCondition = (result, trial) => {
     return new Promise((resolve, reject) => {
         // response arrive
         if(result.success === true){
             // if compile status is not 'WAIT', then don't retry
             if(result.compile !== "WAIT") {
                 resolve(false);
-            } else if(trys < MAXTRY) {
+            } else if(trial <= MAX_TRY) {
                 resolve(true);
             }
             // if maximum number of trial is over, stop asking.
             else {
-                reject('compile time over');
+                reject(new Error('compile time over'));
             }
         }else{
-            reject('connection fail while getting the result of compile');
+            reject(new Error('connection fail while getting the result of compile'));
         }
     });
 };
