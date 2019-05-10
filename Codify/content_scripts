@@ -1,0 +1,9 @@
+
+  "content_scripts": [
+    {
+      "matches": [
+        "kin.naver.com/*"
+      ],
+      "js": ["auto_highlight.js"]
+    }
+  ],
