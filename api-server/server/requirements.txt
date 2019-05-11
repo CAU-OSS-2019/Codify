@@ -1,3 +1,2 @@
 django<2.2
-redis
-rq
+django-background-tasks
