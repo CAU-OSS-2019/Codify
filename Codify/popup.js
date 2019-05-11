@@ -43,5 +43,10 @@ codeTextArea.onkeydown = function(element){
   let code = codeTextArea.value;
   let lang = languageSelect.value;
   let compileResult = await connecting(lang, code);
-  resultTextArea.value = compileResult.output;
+
+  if(compileResult.output === undefined) {
+      resultTextArea.value = compileResult.message;
+  } else {
+      resultTextArea.value = compileResult.output;
+  }
  };

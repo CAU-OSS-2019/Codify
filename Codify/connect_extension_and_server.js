@@ -7,6 +7,7 @@
  *   to server address
  */
 
+// modifying TARGET_ADDRESS constant to match with your server
 const TARGET_ADDRESS = 'http://127.0.0.1:3000';
 const INTERVAL = 500;
 const MAX_TRY = 20;
@@ -115,7 +116,7 @@ const getCompileResult = async id => {
 const reqCompile = compile => {
     return new Promise(resolve => {
         let xmlHttp = new XMLHttpRequest();
-        xmlHttp.open('POST', TARGET_ADDRESS + '/compile', true);
+        xmlHttp.open('POST', TARGET_ADDRESS + '/api/compile', true);
         xmlHttp.setRequestHeader(
             'content-type',
             'application/json; charset=utf-8'
@@ -149,7 +150,7 @@ const reqCompileSuccess = result => {
 const reqCompiledResult = id => {
     return new Promise(resolve=> {
         let xmlHttp = new XMLHttpRequest() ;
-        xmlHttp.open('GET', TARGET_ADDRESS+'/result/'+id, true);
+        xmlHttp.open('GET', TARGET_ADDRESS+'/api/result/'+id, true);
         xmlHttp.send();
         resolve(xmlHttp);
     });
