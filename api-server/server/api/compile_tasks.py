@@ -8,7 +8,7 @@ from .compile_settings import *
 # Background Compile Task
 @background
 def activate_compile():
-    waits = Source.objects.filter(result=3) # get all waiting submissions
+    waits = Source.objects.filter(status=3) # get all waiting submissions
 
     for submit in waits:
         try:
