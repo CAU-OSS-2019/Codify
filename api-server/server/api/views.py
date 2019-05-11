@@ -1,10 +1,10 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http.response import HttpResponse
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from . import models
+from . import models, compile_tasks
 
 
 # Main View
@@ -22,7 +22,6 @@ class Compile(View):
     def post(self, request, *args, **kwargs):
         status_code = 200
 
-        # this is only test(sample) code
         try:
             # load json from request body
             request_json = json.loads(request.body.decode("utf-8"))
@@ -39,8 +38,11 @@ class Compile(View):
             source.code = request_json.get("code")
             source.save()
 
+            # activate background compile tasks (async)
+            compile_tasks.activate_compile()
+
             # request's result, send to client (id : unique source code id)
-            result = json.dumps({"success": True, "id": source.id})
+            result = json.dumps({"success": True, "id": source.pk})
 
         except:
             # if error, return 400 Bad Request
@@ -59,14 +61,13 @@ class CompileResult(View):
     def get(self, request, *args, **kwargs):
         status_code = 200
 
-        # this is only test(sample) code
         try:
-            if kwargs["id"] == 1:
-                pass
-            else:
-                raise ValueError
-
-            result = json.dumps({"success": True, "compile": "OK", "output": ""})
+            source = get_object_or_404(models.Source, pk=kwargs["id"])
+            result = json.dumps({
+                "success": True,
+                "compile": source.get_status_display(),
+                "output": source.output,
+            })
 
         except:
             result = json.dumps({"success": False})

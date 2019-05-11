@@ -1,5 +1,6 @@
 import uuid
 import os
+from django.db import transaction
 from background_task import background
 from api.models import Source
 from .compile_settings import *
@@ -39,21 +40,22 @@ def activate_compile():
             except Exception as e:
                 print(str(e))
 
-            # os.system return value
-            # 0 : compile success
-            # other : error
-            if result == 0:
-                submit.status = 1 # OK
-                using_output = stdout_path # output is stdout (console output)
-            else:
-                submit.status = 2 # FAIL
-                using_output = stderr_path # output is error description
+            with transaction.atomic():
+                # os.system return value
+                # 0 : compile success
+                # other : error
+                if result == 0:
+                    submit.status = 1 # OK
+                    using_output = stdout_path # output is stdout (console output)
+                else:
+                    submit.status = 2 # FAIL
+                    using_output = stderr_path # output is error description
 
-            with open(using_output, "r", encoding="utf-8") as f:
-                submit.output = f.read()
+                with open(using_output, "r", encoding="utf-8") as f:
+                    submit.output = f.read()
 
-            # save compile result
-            submit.save()
+                # save compile result
+                submit.save()
 
         except Exception as e:
             # if exception, go to next submission
