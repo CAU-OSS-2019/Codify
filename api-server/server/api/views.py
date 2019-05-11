@@ -4,6 +4,7 @@ from django.http.response import HttpResponse
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from . import models
 
 
 # Main View
@@ -32,8 +33,14 @@ class Compile(View):
             else:
                 raise ValueError
 
+            # save model instance
+            source = models.Source()
+            source.lang = request_json.get("lang")
+            source.code = request_json.get("code")
+            source.save()
+
             # request's result, send to client (id : unique source code id)
-            result = json.dumps({"success": True, "id": 1})
+            result = json.dumps({"success": True, "id": source.id})
 
         except:
             # if error, return 400 Bad Request
