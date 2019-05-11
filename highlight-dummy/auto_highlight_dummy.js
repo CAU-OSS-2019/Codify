@@ -1,10 +1,11 @@
+
 function textNodesUnder(node){
-  var all = [];
-  for (node=node.firstChild;node;node=node.nextSibling){
-    if (node.nodeType==3) all.push(node);
-    else all = all.concat(textNodesUnder(node));
-  }
-  return all;
+    var all = [];
+    for (node=node.firstChild;node;node=node.nextSibling){
+      if (node.nodeType==3) all.push(node);
+      else all = all.concat(textNodesUnder(node));
+    }
+    return all;
 }
 
 var link = document.createElement("link");
@@ -24,18 +25,28 @@ textNodes = textNodesUnder(node);
 
 var mode = 0;
 var ok = false;
+var codeText = '';
 
 for (var i = 0; i < textNodes.length; i++) {
     var tt = textNodes[i];
     var parent_tt = tt.parentNode;
+    
     if (mode === 0) {
-        if (tt.nodeValue.includes("#include <stdio.h>")) { ok = true; mode++; }
+        if (tt.nodeValue.includes("#include <stdio.h>")) {
+            ok = true; mode++; codeText += tt.nodeValue + '\n';
+        }
     }
     else if (mode === 1) {
-        if (tt.nodeValue.includes("}")) mode++;
+        if (tt.nodeValue.includes("}")) {
+            mode++;
+        }
+        codeText += tt.nodeValue + '\n'; 
     }
     else if (mode === 2) {
-        if (tt.nodeValue.includes("}")) mode++;
+        if (tt.nodeValue.includes("}")) {
+            mode++;
+        }
+        codeText += tt.nodeValue + '\n';       
     }
     else {
         ok = false;
@@ -54,6 +65,22 @@ for (var i = 0; i < textNodes.length; i++) {
     }
 }
 
+//insert button
+if(mode > 0){
+    var runBtn = document.createElement('button');
+    runBtn.className = 'runBtn';
+    runBtn.textContent = 'append to codify!';
+    runBtn.type = 'button'
+    runBtn.onclick = function(){
+        alert('adsf');
+    };
+    var div = document.createElement('div');
+    div.appendChild(runBtn);
+    div.appendChild(document.createElement('br'))
+    var BtnLoc = document.getElementsByClassName('cpp')[0]
+    BtnLoc.parentNode.insertBefore(div,BtnLoc);
+}
+
 var script = document.createElement('script');
 script.onload = function () {
     document.head.appendChild(script);
@@ -64,4 +91,5 @@ script.onload = function () {
     });
 };
 script.src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js";
-document.getElementsByTagName("head")[0].appendChild(script);
+document.getElementsByTagName("head")[0].appendChild(script); 
+
