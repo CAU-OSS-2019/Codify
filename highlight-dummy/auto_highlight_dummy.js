@@ -1,3 +1,4 @@
+
 function textNodesUnder(node){
     var all = [];
     for (node=node.firstChild;node;node=node.nextSibling){

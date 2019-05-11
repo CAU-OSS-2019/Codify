@@ -22,8 +22,11 @@ function addRunButton(codeText){
     BtnLoc.parentNode.insertBefore(div,BtnLoc);
 }
 
-function auto_highlight(){
+
+function auto_highlight () {
     var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
     script.onload = function () {
         hljs.initHighlightingOnLoad();
         hljs.configure({useBR: true});
@@ -47,9 +50,6 @@ function identifyCode(){
     link.type = "text/css";
     link.rel = "stylesheet";
     document.getElementsByTagName("head")[0].appendChild(link);
-
-    var script = document.createElement("script");
-
     
     var node = document.body;
     textNodes = textNodesUnder(node);
@@ -88,7 +88,7 @@ function identifyCode(){
             new_parent.style.display = "inline";
             new_parent.style.padding = "0";
             new_parent.style.margin = "0";
-            new_parent.style.background = " transparent";
+            new_parent.style.background = "transparent";
             new_parent.textContent = tt.nodeValue;
             new_parent.style.fontFamily = "'Source Code Pro'";
             new_parent.style.letterSpacing = "-0.5px";
@@ -98,7 +98,7 @@ function identifyCode(){
     
     if(mode > 0){
         addRunButton(codeText);
-        auto_highlight()
+        auto_highlight(document);
     }
 }
 

@@ -20,7 +20,8 @@
     {
       "matches": ["https://kin.naver.com/*"],
       "js": ["identify.js"],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "css":["buttonStyle.css"]
     }
   ],
   "content_security_policy": "script-src 'self' https://cdnjs.cloudflare.com; object-src 'self'",
