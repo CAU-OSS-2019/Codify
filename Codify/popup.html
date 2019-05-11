@@ -8,8 +8,11 @@
     <!-- <form action="" method="get"> -->
       <div class="button">
           <button id="compile" type="submit">Compile your code</button>
+          <select id = lang size="1">
+            <option selected>-- 선택 --</option>
+            <option id="c">c</option>
+          </select>
       </div>
-
       <div>
         <label for="code">CODE:</label>
         <textarea id="code" rows="17" cols="70" style="resize: none"></textarea>
@@ -19,6 +22,7 @@
         <label for="result">RESULT:</label>
         <textarea id="result" rows="10" cols="70" readonly="readonly" style="resize: none"></textarea>
       </div>
-    <script src="popup.js"></script>
+    <script type="module" src="popup.js"></script>
+    <script type="module" src="connect_extension_and_server.js"></script>
   </body>
 </html>
