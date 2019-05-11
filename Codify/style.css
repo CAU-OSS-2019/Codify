@@ -20,7 +20,7 @@ label {
 
 textarea {
     font: 1.2em sans-serif;
-    -moz-box-sizing: borer-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     border: 1px solid #999;
     background-color: #303030;
@@ -36,3 +36,6 @@ button {
     margin-left: .3em;
 }
 
+#lang {
+    margin-left: .5em;
+}
