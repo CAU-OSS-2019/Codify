@@ -53,6 +53,8 @@ class Compile(View):
             # return response with json header
             response = HttpResponse(result, status=status_code)
             response["Content-Type"] = "application/json; charset=utf-8"
+            response["Access-Control-Allow-Origin"] = "*"
+            response["Access-Control-Allow-Methods"] = "*"
             return response
 
 
@@ -77,4 +79,6 @@ class CompileResult(View):
             # return response with json header
             response = HttpResponse(result, status=status_code)
             response["Content-Type"] = "application/json; charset=utf-8"
+            response["Access-Control-Allow-Origin"] = "*"
+            response["Access-Control-Allow-Methods"] = "*"
             return response
