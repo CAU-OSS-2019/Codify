@@ -4,7 +4,7 @@
   "description": "Auto Code Detection and Highlight + Edit and Compile Code on Chrome",
   "permissions": ["contextMenus", "storage", "tabs", "activeTab"],
   "background": {
-    "scripts": ["background.js","auto_highlight.js"],
+    "scripts": ["background.js"],
     "persistent": false
   },
   "browser_action": {
@@ -19,7 +19,7 @@
   "content_scripts":[
     {
       "matches": ["https://kin.naver.com/*"],
-      "js": ["auto_highlight.js"],
+      "js": ["identify.js"],
       "run_at": "document_end"
     }
   ],

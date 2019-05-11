@@ -20,7 +20,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData){
       code: "window.getSelection().toString();"
     }, function(selection){
       chrome.storage.sync.set({'storagedCode': selection});
-      console.log(selection);
     });
   }
 });
