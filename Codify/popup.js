@@ -1,5 +1,7 @@
 'use strict';
 
+import connecting from "./connect_extension_and_server.js";
+
 // get storaged code from chrome storage
 chrome.storage.sync.get('storagedCode', function(item){
     codeTextArea.value = item.storagedCode;
@@ -7,6 +9,8 @@ chrome.storage.sync.get('storagedCode', function(item){
 
 let codeTextArea = document.getElementById('code');
 let compileButton = document.getElementById('compile');
+let languageSelect = document.getElementById('lang');
+
 
 // save content of codeTextArea when user change it
 codeTextArea.onchange = function(){
@@ -34,14 +38,10 @@ codeTextArea.onkeydown = function(element){
 };
 
 // compile code in codeTextArea and print the result on resultTextArea
- compileButton.onclick = function(){
+ compileButton.onclick = async function(){
   let resultTextArea = document.getElementById('result');
-  var code = codeTextArea.value;
-  var compileResult = "Result";
-
-  //************************ */
-  // compile 'code' and save result in variable 'compileResult'
-  //************************ */
-
-  resultTextArea.value = compileResult;
+  let code = codeTextArea.value;
+  let lang = languageSelect.value;
+  let compileResult = await connecting(lang, code);
+  resultTextArea.value = compileResult.output;
  };
