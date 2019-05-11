@@ -1,3 +1,4 @@
+//part of identify function. 
 function textNodesUnder(node) {
   var all = [];
   for (node=node.firstChild;node;node=node.nextSibling){
@@ -7,6 +8,7 @@ function textNodesUnder(node) {
   return all;
 }
 
+//Add button above the code. It changed chrome.storage when the button is clicked so extension can use it
 function addRunButton(codeText){
     var runBtn = document.createElement('button');
     runBtn.className = 'runBtn';
@@ -22,7 +24,7 @@ function addRunButton(codeText){
     BtnLoc.parentNode.insertBefore(div,BtnLoc);
 }
 
-
+//highlight identified code usign highlight.js, finding first tag of 'code'
 function auto_highlight () {
     var script = document.createElement('script');
     script.type = 'text/javascript';
@@ -38,6 +40,7 @@ function auto_highlight () {
     document.getElementsByTagName("head")[0].appendChild(script);   
 }
 
+//Idenitfy code and wrap it with code.cpp
 function identifyCode(){
     var link = document.createElement("link");
     link.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/xcode.min.css";
