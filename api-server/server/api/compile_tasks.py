@@ -35,6 +35,7 @@ def activate_compile():
                 raise ValueError("Not Supported Language")
             result = os.system("%s %s %s %s" % (exec_path, file_path, stdout_path, stderr_path))
 
+            # remove source file from disk
             try:
                 os.remove(file_path)
             except Exception as e:
@@ -56,6 +57,17 @@ def activate_compile():
 
                 # save compile result
                 submit.save()
+
+            # remove output files from disk
+            try:
+                os.remove(stdout_path)
+            except Exception as e:
+                print(str(e))
+            try:
+                os.remove(stderr_path)
+            except Exception as e:
+                print(str(e))
+
 
         except Exception as e:
             # if exception, go to next submission
