@@ -17,5 +17,8 @@ from django.urls import path
 from . import views as api_views
 
 urlpatterns = [
+    # Main Page
     path("", api_views.Main.as_view(), name="api-main"),
+    # Compile API, receive source code and push compile task to background queue
+    path("compile/", api_views.Compile.as_view(), name="api-compile"),
 ]
