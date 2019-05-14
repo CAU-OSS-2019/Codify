@@ -8,7 +8,7 @@
  */
 
 // modifying TARGET_ADDRESS constant to match with your server
-const TARGET_ADDRESS = 'http://127.0.0.1:3000';
+const TARGET_ADDRESS = 'http://codify.njw.kr:8000';
 const INTERVAL = 500;
 const MAX_TRY = 20;
 
