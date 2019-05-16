@@ -6,27 +6,23 @@ if (typeof browser === "undefined")
 // Currently developing.
 // Add a button above the detected code.
 // The button changes browser.storage when clicked so the extension can use it.
-/*
-function addRunButton(codeText) {
-    document.getElementsByClassName("codify-code").forEach(function(node) {
-        var runBtn = document.createElement("button");
-        var div = document.createElement("div");
-    });
-    var btnLoc = document.getElementsByClassName("codify-code");
 
-    runBtn.className = "runBtn";
-    runBtn.textContent = "Append to codify";
-    runBtn.type = "button"
-    runBtn.onclick = function() {
-        browser.storage.sync.set({"storagedCode": codeText});
-    };
-
-    div.appendChild(runBtn);
-    div.appendChild(document.createElement("br"))
-
-    btnLoc.parentNode.insertBefore(div, btnLoc);
+function addRunButton(codeNumber) {
+        var btnLoc = document.getElementById("codify-c-code-" + codeNumber);
+        var runBtn = document.createElement('button');
+        runBtn.className = "runBtn";
+        runBtn.textContent = "Append to codify";
+        runBtn.type = "button"
+        runBtn.onclick = function() {
+            var codeText = "";
+            var textNodes = getAllChildTextNodes(btnLoc);
+            textNodes.slice(1).forEach(node => 
+                codeText += node.nodeValue + '\n');
+            browser.storage.sync.set({"storagedCode": codeText});
+        };
+        btnLoc.insertBefore(runBtn, btnLoc.firstChild);
 }
-*/
+
 
 // Currently developing.
 // Highlight detected code using highlight.js.
@@ -117,12 +113,12 @@ function detectC() {
         }
     }
 
-    /*
-    if (codeNumber) {
-        addRunButton(codeText);
-        autoHighlight(document);
+    console.log(codeNumber);
+    for(var i = 1; i < codeNumber + 1; i++) {
+        addRunButton(i);
+        //autoHighlight(document);
     }
-    */
+    
 }
 
 // Detect C code.
