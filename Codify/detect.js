@@ -100,7 +100,7 @@ function detectC() {
         if (codeBegan === false && beginChecks[i]) {
             codeBegan = true;
             beginIdx = i;
-        } else if (codeBegan === true && endChecks[i] && codeNumber < 2) {
+        } else if (codeBegan === true && endChecks[i]) {
             codeBegan = false;
 
             codeElement = document.createElement("code");
