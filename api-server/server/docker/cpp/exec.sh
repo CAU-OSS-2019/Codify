@@ -9,8 +9,9 @@ time_limit=10 # seconds
 
 # submission variables
 source_file=$1
-stdout_file=$2
-stderr_file=$3
+stdin_file=$2
+stdout_file=$3
+stderr_file=$4
 
 echo "" > ${stdout_file}
 echo "" > ${stderr_file}
@@ -20,6 +21,7 @@ if [ "$(docker ps -a -f name=${con} --format {{.Names}})" != "${con}" ]; then
 fi
 
 docker cp "${source_file}" ${con}:/code/main.cpp
+docker cp "${stdin_file}" ${con}:/code/stdin.in
 docker start ${con}
 docker stop -t ${time_limit} ${con}
 docker cp ${con}:/code/stdout.out "${stdout_file}"
