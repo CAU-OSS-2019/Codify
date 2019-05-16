@@ -25,7 +25,7 @@ docker stop -t ${time_limit} ${con}
 docker cp ${con}:/code/stdout.out "${stdout_file}"
 docker cp ${con}:/code/stderr.out "${stderr_file}"
 
-if [ "$(docker inspect codify-cpp-container --format='{{.State.ExitCode}}')" == "0" ]; then
+if [ "$(docker inspect ${con} --format='{{.State.ExitCode}}')" == "0" ]; then
   echo "OK"
   ret=0
 else
