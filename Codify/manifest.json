@@ -19,7 +19,7 @@
   "content_scripts":[
     {
       "matches": ["https://kin.naver.com/*"],
-      "js": ["hljs.js","detect.js"],
+      "js": ["hljs.js","detect2.js"],
       "run_at": "document_end",
       "css":["buttonStyle.css"]
     }
