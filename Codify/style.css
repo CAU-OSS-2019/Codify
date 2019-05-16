@@ -1,6 +1,6 @@
 body {
-    width: 475px;
-    height: 475px;
+    width: 470px;
+    height: 500px;
     font-family: sans-serif;
     font-size: 2vw;
     background-color: #404040;
@@ -8,14 +8,15 @@ body {
 }
 
 body div + div {
-    margin-top: 0.5em;
+    margin-top: .5em;
 }
 
 label {
-    width: 55px;
-    font-size: 1.3em;
+    /* width: 25px; */
+    font-size: 1.5em;
     display: inline-block;
     text-align: right;
+    margin-left: .35em;
 }
 
 textarea {
@@ -26,9 +27,10 @@ textarea {
     background-color: #303030;
     color: white;
     vertical-align: top;
+    margin-left: .45em;
 }
 
-.button {
+.option {
     padding-left: 55px;
 }
 
@@ -36,6 +38,82 @@ button {
     margin-left: .3em;
 }
 
-#lang {
+select {
+    width: 90px;
     margin-left: .5em;
+    border: 1px solid #999;
+}
+
+#toggle {
+    position: relative;
+    width: 45px;
+    margin-left: 15em;
+}
+
+#firstline {
+    display: flex;
+}
+
+.onoffswitch-checkbox {
+    display: none;
+}
+
+.onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #E3E3E3; 
+    border-radius: 15px;
+}
+
+.onoffswitch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 20px;
+    box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+    content: "";
+    padding-left: 10px;
+    background-color: #4651EB;
+    color: #FFFFFF;
+}
+
+.onoffswitch-inner:after {
+    content: "";
+    padding-right: 10px;
+    background-color: #FFFFFF;
+    color: #666666;
+    text-align: right;
+}
+
+.onoffswitch-switch {
+    display: block;
+    width: 10px;
+    margin: 5px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 17px;
+    border: 2px solid #E3E3E3;
+    border-radius: 15px;
+    transition: all 0.3s ease-in 0s; 
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
 }
