@@ -2,7 +2,8 @@ from django.db import models
 
 class Source(models.Model):
     LANG_CHOICES = (
-        ("c", "C Language"),
+        ("c", "C11"),
+        ("cpp", "C++17"),
     )
     STATUS_CHOICES = (
         (1, "OK"),

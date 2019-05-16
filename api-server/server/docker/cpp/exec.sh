@@ -4,7 +4,7 @@ SCRIPTPATH=$( cd "$(dirname "$0")" ; pwd )
 ret=0 # exit code
 
 # docker variables
-con="codify-c-container" # docker container name
+con="codify-cpp-container" # docker container name
 time_limit=10 # seconds
 
 # submission variables
@@ -19,7 +19,7 @@ if [ "$(docker ps -a -f name=${con} --format {{.Names}})" != "${con}" ]; then
   bash "${SCRIPTPATH}/docker-run.sh"
 fi
 
-docker cp "${source_file}" ${con}:/code/main.c
+docker cp "${source_file}" ${con}:/code/main.cpp
 docker start ${con}
 docker stop -t ${time_limit} ${con}
 docker cp ${con}:/code/stdout.out "${stdout_file}"
