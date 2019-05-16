@@ -5,6 +5,9 @@ chrome.runtime.onInstalled.addListener(function () {
   // initialize storaged code of chrome storage
   chrome.storage.sync.set({ 'storagedCode': "" });
 
+  // initialize auto highlight to true
+  chrome.storage.sync.set({ 'autoHighlight': true });
+
   // create 'Overwrite to Codify' contextMenus
   chrome.contextMenus.create({
     "id": "overwriteCode",
@@ -38,10 +41,10 @@ chrome.contextMenus.onClicked.addListener(function (clickData) {
       code: "window.getSelection().toString();"
     }, function (selection) {
       chrome.storage.sync.get('storagedCode', function (item) {
-        existingCode = item.storagedCode;
-        if (existingCode.toString().localeCompare("") != 0) {
-          concatCode = existingCode + '\n' + selection;
-          //concatCode = existingCode.concat('\n', selection);
+        existingCode = item.storagedCode.toString();
+        if (existingCode.localeCompare("") != 0) {
+          //concatCode = existingCode + '\n' + selection.toString();
+          concatCode = existingCode.concat('\n', selection.toString());
         }
         else {
           concatCode = selection;
