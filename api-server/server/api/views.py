@@ -26,8 +26,8 @@ class Compile(View):
             # load json from request body
             request_json = json.loads(request.body.decode("utf-8"))
 
-            # only support c language
-            if request_json.get("lang") == "c":
+            # only support c language & cpp language
+            if request_json.get("lang") == "c" or request_json.get("lang") == "cpp":
                 pass
             else:
                 raise ValueError
@@ -36,6 +36,7 @@ class Compile(View):
             source = models.Source()
             source.lang = request_json.get("lang")
             source.code = request_json.get("code")
+            source.stdin = request_json.get("stdin", "")
             source.save()
 
             # activate background compile tasks (async)

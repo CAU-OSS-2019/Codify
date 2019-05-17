@@ -2,19 +2,39 @@
 
 import connecting from "./connect_extension_and_server.js";
 
+let codeTextArea = document.getElementById('code');
+let compileButton = document.getElementById('compile');
+let languageSelect = document.getElementById('lang');
+let highlightSwitch = document.getElementById('myonoffswitch');
+
 // get storaged code from chrome storage
 chrome.storage.sync.get('storagedCode', function(item){
     codeTextArea.value = item.storagedCode;
 });
 
-let codeTextArea = document.getElementById('code');
-let compileButton = document.getElementById('compile');
-let languageSelect = document.getElementById('lang');
-
+// get toggle switch checked info from chrome storage
+chrome.storage.sync.get('autoHighlight', function (item) {
+    if (item.autoHighlight) {
+        highlightSwitch.checked = true;
+    }
+    else {
+        highlightSwitch.checked = false;
+    }
+});
 
 // save content of codeTextArea when user change it
 codeTextArea.onchange = function(){
   chrome.storage.sync.set({storagedCode: codeTextArea.value});
+};
+
+// save toggle switch checked info when user click switch
+highlightSwitch.onclick = function () {
+    if(highlightSwitch.checked){
+        chrome.storage.sync.set({ 'autoHighlight': true });
+    }
+    else{
+        chrome.storage.sync.set({ 'autoHighlight': false });
+    }
 };
 
 // facilitate 'tab' key in textarea
