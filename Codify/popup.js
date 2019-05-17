@@ -42,10 +42,12 @@ codeTextArea.onkeydown = function(element){
   let resultTextArea = document.getElementById('result');
   let code = codeTextArea.value.replace(/\u00a0/g, " ").replace(/\u00c2/g, " ");
   let lang = languageSelect.value;
-  let compileResult = await connecting(lang, code);
-
+  let input = document.getElementById('input').value;
+  let compileResult = await connecting(lang, code, input);
   if(compileResult.output === undefined) {
       resultTextArea.value = compileResult.message;
+  } else if(compileResult.output === ""){
+      resultTextArea.value = "Runtime Error";
   } else {
       resultTextArea.value = compileResult.output;
   }

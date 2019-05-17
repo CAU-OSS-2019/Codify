@@ -11,6 +11,7 @@
           <select id = lang size="1">
             <option selected>-- 선택 --</option>
             <option id="c">c</option>
+            <option id="c++">c++</option>
           </select>
       </div>
       <div>
@@ -18,9 +19,13 @@
         <textarea id="code" rows="17" cols="70" style="resize: none"></textarea>
       </div>
     <!-- </form> -->
+    <div>
+      <label for="input">INPUT:</label>
+      <textarea id="input" rows="3" cols="70" style="resize: none"></textarea>
+    </div>
       <div>
         <label for="result">RESULT:</label>
-        <textarea id="result" rows="10" cols="70" readonly="readonly" style="resize: none"></textarea>
+        <textarea id="result" rows="7" cols="70" readonly="readonly" style="resize: none"></textarea>
       </div>
     <script type="module" src="popup.js"></script>
     <script type="module" src="connect_extension_and_server.js"></script>
