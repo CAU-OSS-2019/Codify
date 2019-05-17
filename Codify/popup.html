@@ -1,44 +1,76 @@
 <!DOCTYPE html>
 <html lang="ko">
+
   <head>
       <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href=style.css>  
+      <!-- bootstrap -->
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+      <script src="js/jquery-3.4.1.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <!-- font awesome -->
+      <link rel="stylesheet" type="text/css" href="css/all.min.css">
+      <!-- custom -->
+      <link rel="stylesheet" type="text/css" href="style.css">
   </head>
+
   <body>
-   <div id="firstline">
-     <div class="button">
-       <label for="lang" width="25">Lang:</label>
-       <select id=lang size="1">
-         <option selected>Language</option>
-         <option id="c">C</option>
-         <option id="c++">c++</option>
-       </select>
-       <button id="compile" type="submit">Compile your code</button>
-       </div>
-       <div class="onoffswitch" id="toggle">
-        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-        <label class="onoffswitch-label" for="myonoffswitch">
-        <span class="onoffswitch-inner"></span>
-        <span class="onoffswitch-switch"></span>
-      </label>
-    </div>
+    <span class="titlebar">
+      Codify ver.1.0
+    </span>
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span id="navbar-onoff" class="navbar-brand">
+            <div class="onoffswitch">
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+              <label class="onoffswitch-label" for="myonoffswitch">
+                  <span class="onoffswitch-inner"></span>
+                  <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+          </span>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Editor</a></li>
+            <li><a href="https://naver.com">Selector</a></li>
+            <li><a href="#">Logger</a></li>
+            <li><a href="#">Setting</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="firstline">
+      <div class="button">
+        <label for="lang" class="section-label">LANG: </label>
+        <select id="lang" class="form-control" size="1">
+          <option id="c" selected>C (gcc main.c -O2 -std=c11)</option>
+          <option id="cpp">C++ (g++ main.cpp -O2 -std=gnu++14)</option>
+        </select>
+        <div class="compile-buttons">
+          <button id="compile" class="btn btn-success" type="button"><i class="fas fa-play mr-1"></i>Run</button>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
     </div>
 
     <div>
-      <label for="code">CODE:</label>
+      <label for="code" class="section-label">CODE:</label>
+      <textarea id="code" style="resize: none"></textarea>
     </div>
     <div>
-      <textarea id="code" rows="15" cols="78" style="resize: none"></textarea>
+      <label for="input" class="section-label">STDIN:</label>
+      <textarea id="input" style="resize: none"></textarea>
     </div>
-    <!-- </form> -->
-    <div>
-      <label for="input">INPUT:</label>
-      <textarea id="input" rows="3" cols="78" style="resize: none"></textarea>
-    </div>
-      <div>
-        <label for="result">RESULT:</label>
-        <textarea id="result" rows="10" cols="78" readonly="readonly" style="resize: none"></textarea>
-      </div>
+
     <script type="module" src="popup.js"></script>
     <script type="module" src="connect_extension_and_server.js"></script>
   </body>
