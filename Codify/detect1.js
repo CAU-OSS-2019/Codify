@@ -6,12 +6,11 @@ if (typeof browser === "undefined")
 // Currently developing.
 // Add a button above the detected code.
 // The button changes browser.storage when clicked so the extension can use it.
-
 function addRunButton(codeNumber) {
         var btnLoc = document.getElementById("codify-c-code-" + codeNumber);
         var runBtn = document.createElement('button');
-        runBtn.className = "runBtn";
-        runBtn.textContent = "Append to codify";
+        runBtn.className = "runBtn runBtn-codify";
+        runBtn.innerHTML = "<i class='far fa-edit' style='margin-right: 5px;'></i>Edit with Codify";
         runBtn.type = "button"
         runBtn.style.display = "block";
         runBtn.onclick = function() {
@@ -19,27 +18,6 @@ function addRunButton(codeNumber) {
         };
         btnLoc.insertBefore(runBtn, btnLoc.firstChild);
 }
-
-
-// Currently developing.
-// Highlight detected code using highlight.js.
-/*
-function autoHighlight() {
-    var script = document.createElement("script");
-
-    script.type = "text/javascript";
-    script.async = true;
-    script.onload = function() {
-        hljs.initHighlightingOnLoad();
-        hljs.configure({useBR: true});
-        document.querySelectorAll("code.codify-code").forEach(block => {
-            hljs.highlightBlock(block);
-        });
-    };
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js";
-    document.getElementsByTagName("head")[0].appendChild(script);
-}
-*/
 
 // Get all non-empty child text nodes recursively.
 function getAllChildTextNodes(rootNode) {
@@ -82,9 +60,6 @@ function autoDetectC() {
 
     var codeBegan = false;
     var beginIdx;
-
-    var range = document.createRange();
-    var codeElement;
     var codeNumber = 0;
 
     var i;
@@ -106,17 +81,20 @@ function autoDetectC() {
             beginIdx = i;
         } else if (codeBegan === true && endChecks[i]) {
             // found some code
-
             codeBegan = false;
+
+            // if code is too short, skip it
+            if (i - beginIdx < 3) continue;
+
             window.codeCollection.push("");
             codeNumber++;
 
             // change style and save code
             for (var j = beginIdx; j <= i; j++) {
                 var tt = textNodes[j];
-                var new_parent = document.createElement("pre");
-                window.codeCollection[window.codeCollection.length - 1] = window.codeCollection[window.codeCollection.length - 1] + tt.nodeValue + "\n";
-                new_parent.className = "codify codify-code codify-c-code";
+                var new_parent = document.createElement("code");
+                codeCollection[codeCollection.length - 1] = codeCollection[codeCollection.length - 1] + tt.nodeValue + "\n";
+                new_parent.className = "codify codify-code codify-c-code cpp";
                 if (j === beginIdx) {
                     new_parent.id = "codify-c-code-" + codeNumber;
                 }
@@ -130,7 +108,7 @@ function autoDetectC() {
                 tt.replaceWith(new_parent);
             }
 
-            // a little code formating
+            // a little auto indenting & save to global object
             var indented = hljs.highlight("cpp", codeCollection[codeCollection.length - 1], true, false);
             codeCollection[codeCollection.length - 1] = createElementFromHTML(indented.value).innerText;
 
@@ -142,7 +120,7 @@ function autoDetectC() {
     }
 
     console.log(codeNumber);
-    for(var i = 1; i < codeNumber + 1; i++) {
+    for(i = 1; i < codeNumber + 1; i++) {
         addRunButton(i);
     }
 }
@@ -161,24 +139,17 @@ function init() {
     link.rel = "stylesheet";
     document.getElementsByTagName("head")[0].appendChild(link);
 
-    var script = document.createElement('script');
-    script.onload = function () {
-        document.head.appendChild(script);
-        hljs.initHighlightingOnLoad();
-        hljs.configure({useBR: true});
+    hljs.initHighlightingOnLoad();
+    hljs.configure({useBR: true});
+    window.codeCollection = [];
 
-        window.codeCollection = [];
-
-        // check whether auto highlight mode is on or not
-        chrome.storage.sync.get('autoHighlight', function (item) {
-            if (item.autoHighlight) {
-                // Detect C code.
-                autoDetectC();
-            }
-        });
-    };
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js";
-    document.getElementsByTagName("head")[0].appendChild(script);
+    // check whether auto highlight mode is on or not
+    chrome.storage.sync.get('autoHighlight', function (item) {
+        if (item.autoHighlight) {
+            // Detect C code.
+            autoDetectC();
+        }
+    });
 }
 
 
