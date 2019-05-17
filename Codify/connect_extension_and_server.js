@@ -36,7 +36,7 @@ const getReqResponse = xmlHttp => {
                     let returnVal = JSON.parse(xmlHttp.responseText);
                     resolve(returnVal);
                 } else {
-                    reject(new Error(err));
+                    reject(new Error("Request Fail"));
                 }
             }
         };
@@ -49,11 +49,17 @@ const getReqResponse = xmlHttp => {
  * and code to compile and get result using getCompile function.
  * @param lang
  * @param code
+ * @param stdin
  * @returns {Promise<json>}
  */
-const compileReqAndGetResult = async (lang, code) => {
+const compileReqAndGetResult = async (lang, code, stdin) => {
     try {
-        let id = await compileReq(lang,code);
+        let compile = JSON.stringify({
+            'lang':lang,
+            'code':code,
+            'stdin':stdin
+        });
+        let id = await compileReq(compile);
         return await getCompileResult(id);
     } catch (err){
         return err;
@@ -63,14 +69,13 @@ const compileReqAndGetResult = async (lang, code) => {
 /**
  * @brief request id value from server
  * request using reqCompile to send to server and get result using
- * getReqResponse to get json. determine if
- * @param lang
- * @param code
+<<<<<<< HEAD
+ * getReqResponse to get json.
+ * @param compile
  * @returns {Promise<int>}
  */
-const compileReq = async (lang, code) => {
+const compileReq = async compile => {
     try{
-        let compile = JSON.stringify({'lang':lang, 'code':code});
         let xmlHttpToReqCompile = await reqCompile(compile);
         let data = await getReqResponse(xmlHttpToReqCompile);
         // return id value to request the result of compile
