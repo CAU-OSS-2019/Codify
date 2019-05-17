@@ -61,7 +61,7 @@ codeTextArea.onkeydown = function(element){
  compileButton.onclick = async function(){
   let resultTextArea = document.getElementById('result');
   let code = codeTextArea.value.replace(/\u00a0/g, " ").replace(/\u00c2/g, " ");
-  let lang = languageSelect.value;
+  let lang = languageSelect.options[languageSelect.selectedIndex].id;
   let input = document.getElementById('input').value;
   let compileResult = await connecting(lang, code, input);
   if(compileResult.output === undefined) {
