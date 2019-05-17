@@ -62,11 +62,11 @@ function createElementFromHTML(htmlString) {
 }
 
 // Detect C code and wrap it with code element.
-function detectC22() {
+function autoDetectC() {
     var codeBeginPatterns = [
         /# *include *(<|")[^>"]+(>|")/g,
         /# *pragma/g,
-        /(bool|char|signed|unsigned|short|int|long|float|double|struct|union) *[a-zA-Z_]\w*\(/g
+        /(bool|char|signed|unsigned|short|int|long|float|double|struct|union|void) +[a-zA-Z_]\w*[ \t]*\(/g
     ];
 
     var textNodes = getAllChildTextNodes(document.body);
@@ -168,11 +168,21 @@ function init() {
         hljs.configure({useBR: true});
 
         window.codeCollection = [];
-        // Detect C code.
-        detectC22();
+
+        // check whether auto highlight mode is on or not
+        chrome.storage.sync.get('autoHighlight', function (item) {
+            if (item.autoHighlight) {
+                // Detect C code.
+                autoDetectC();
+            }
+        });
     };
     script.src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js";
     document.getElementsByTagName("head")[0].appendChild(script);
 }
 
-init();
+
+// do process when loading is finish
+window.onload = function() {
+    init();
+}
