@@ -5,27 +5,39 @@
         <link rel="stylesheet" type="text/css" href=style.css>  
   </head>
   <body>
-    <!-- <form action="" method="get"> -->
-      <div class="button">
-          <button id="compile" type="submit">Compile your code</button>
-          <select id = lang size="1">
-            <option selected>-- 선택 --</option>
-            <option id="c">c</option>
-            <option id="c++">c++</option>
-          </select>
-      </div>
-      <div>
-        <label for="code">CODE:</label>
-        <textarea id="code" rows="17" cols="70" style="resize: none"></textarea>
-      </div>
+   <div id="firstline">
+     <div class="button">
+       <label for="lang" width="25">Lang:</label>
+       <select id=lang size="1">
+         <option selected>Language</option>
+         <option id="c">C</option>
+         <option id="c++">c++</option>
+       </select>
+       <button id="compile" type="submit">Compile your code</button>
+       </div>
+       <div class="onoffswitch" id="toggle">
+        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+        <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+      </label>
+    </div>
+    </div>
+
+    <div>
+      <label for="code">CODE:</label>
+    </div>
+    <div>
+      <textarea id="code" rows="15" cols="78" style="resize: none"></textarea>
+    </div>
     <!-- </form> -->
     <div>
       <label for="input">INPUT:</label>
-      <textarea id="input" rows="3" cols="70" style="resize: none"></textarea>
+      <textarea id="input" rows="3" cols="78" style="resize: none"></textarea>
     </div>
       <div>
         <label for="result">RESULT:</label>
-        <textarea id="result" rows="7" cols="70" readonly="readonly" style="resize: none"></textarea>
+        <textarea id="result" rows="10" cols="78" readonly="readonly" style="resize: none"></textarea>
       </div>
     <script type="module" src="popup.js"></script>
     <script type="module" src="connect_extension_and_server.js"></script>
