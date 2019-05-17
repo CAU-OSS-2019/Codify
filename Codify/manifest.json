@@ -18,11 +18,15 @@
   },
   "content_scripts":[
     {
-      "matches": ["https://kin.naver.com/*"],
-      "js": ["hljs.js","detect2.js"],
+      "all_frames": true,
+      "matches": ["*://*/*"],
+      "js": ["hljs.js", "detect1.js"],
       "run_at": "document_end",
-      "css":["buttonStyle.css"]
+      "css": ["newButtonStyle.css", "css/all.min.css"]
     }
+  ],
+  "web_accessible_resources": [
+      "webfonts/*.*"
   ],
   "content_security_policy": "script-src 'self' https://cdnjs.cloudflare.com; object-src 'self'",
 
