@@ -36,6 +36,7 @@ class Compile(View):
             source = models.Source()
             source.lang = request_json.get("lang")
             source.code = request_json.get("code")
+            source.stdin = request_json.get("stdin", "")
             source.save()
 
             # activate background compile tasks (async)

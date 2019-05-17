@@ -31,12 +31,14 @@
 #### Request
 1. lang (string) : 컴파일 언어입니다. ("c"라고 쓰면 C언어, "cpp"라고 쓰면 C++를 나타냅니다.)
 2. code (string) : 소스 코드입니다.
+3. stdin (string) : 표준 입력으로 넣어줄 입력 문자열입니다. (생략 가능)
 
 #### Request Example
 ```
 {  
   "lang": "c",  
-  "code": "#include <stdio.h> \n int main(){printf(\"Hi\"); return 0;}"  
+  "code": "#include <stdio.h> \n int main(){printf(\"Hi\"); return 0;}",
+  "stdin": "12345"
 }
 ```
 
