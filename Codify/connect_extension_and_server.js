@@ -69,7 +69,6 @@ const compileReqAndGetResult = async (lang, code, stdin) => {
 /**
  * @brief request id value from server
  * request using reqCompile to send to server and get result using
-<<<<<<< HEAD
  * getReqResponse to get json.
  * @param compile
  * @returns {Promise<int>}
