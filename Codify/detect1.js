@@ -42,9 +42,10 @@ function createElementFromHTML(htmlString) {
 // Detect C code and wrap it with code element.
 function autoDetectC() {
     var codeBeginPatterns = [
-        /# *include *(<|")[^>"]+(>|")/g,
-        /# *pragma/g,
-        /(bool|char|signed|unsigned|short|int|long|float|double|struct|union|void) +[a-zA-Z_]\w*[ \t]*\(/g
+        /^[ \t\u00a0\u00c2]*#[ \t\u00a0\u00c2]*include[ \t\u00a0\u00c2]*(<|")[^>"]+(>|")[ \t\u00a0\u00c2]*$/g,
+        /^[ \t\u00a0\u00c2]*#[ \t\u00a0\u00c2]*pragma[ \t\u00a0\u00c2]+[a-zA-Z_]\w*/g,
+        /^[ \t\u00a0\u00c2]*#[ \t\u00a0\u00c2]*define[ \t\u00a0\u00c2]+[a-zA-Z_]\w*/g,
+        /^[ \t\u00a0\u00c2]*(bool|char|signed|unsigned|short|int|long|float|double|struct|union|void)[ \t\u00a0\u00c2]+[a-zA-Z_]\w*[ \t\u00a0\u00c2]*\(/g
     ];
 
     var textNodes = getAllChildTextNodes(document.body);
