@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+  <head>
+      <meta charset="utf-8" />
+      <!-- bootstrap -->
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+      <script src="js/jquery-3.4.1.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <!-- font awesome -->
+      <link rel="stylesheet" type="text/css" href="css/all.min.css">
+      <!-- custom -->
+      <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+  <body id="result-html">
+    <span class="titlebar">
+      Codify ver.1.0
+    </span>
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span id="navbar-onoff" class="navbar-brand">
+            <div class="onoffswitch">
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+              <label class="onoffswitch-label" for="myonoffswitch">
+                  <span class="onoffswitch-inner"></span>
+                  <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+          </span>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Editor</a></li>
+            <li><a href="https://naver.com">Selector</a></li>
+            <li><a href="#">Logger</a></li>
+            <li><a href="#">Setting</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div>
+      <label for="result" class="section-label">RESULT:</label>
+      <textarea id="result" style="resize: none" readonly="readonly"></textarea>
+    </div>
+
+    <div id="LastLine">
+      <div class="button">
+        <div class="return-button">
+          <button id="return" class="btn btn-success" type="button"><i class="fas fa-play mr-1"></i>RETURN TO COMPILE</button>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+    <script type="module" src="connect_extension_and_server.js"></script>
+    <script src="result.js"></script>
+  </body>
+</html>
