@@ -2,7 +2,7 @@
   "name": "Codify",
   "version": "1.0",
   "description": "Auto Code Detection and Highlight + Edit and Compile Code on Chrome",
-  "permissions": ["contextMenus", "storage", "tabs", "activeTab"],
+  "permissions": ["contextMenus", "storage", "tabs", "activeTab", "notifications"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
@@ -20,9 +20,9 @@
     {
       "all_frames": true,
       "matches": ["*://*/*"],
-      "js": ["hljs.js", "detect1.js"],
+      "js": ["hljs.js", "detect1.js", "js/jquery-3.4.1.min.js", "click-to-codify.js", "util.browser.js"],
       "run_at": "document_end",
-      "css": ["newButtonStyle.css", "css/all.min.css"]
+      "css": ["newButtonStyle.css", "css/all.min.css", "codify-selector.css", "github.min.css"]
     }
   ],
   "web_accessible_resources": [

@@ -1,5 +1,6 @@
 'use strict';
 
+
 // executed when chrome extension is first installed
 chrome.runtime.onInstalled.addListener(function () {
   // initialize storaged code of chrome storage
@@ -54,3 +55,21 @@ chrome.contextMenus.onClicked.addListener(function (clickData) {
     });
   }
 });
+
+
+chrome.extension.onMessage.addListener(function(myMessage, sender, sendResponse){
+  if (myMessage.type === "noti") {
+    noti(myMessage.msg);
+  }
+  return true;
+});
+
+
+function noti(msg) {
+  chrome.notifications.create("auto-noti-" + Math.random(), {
+      type: "basic",
+      iconUrl: "images/icon_128.png",
+      title: "Codify",
+      message: msg
+  });
+}

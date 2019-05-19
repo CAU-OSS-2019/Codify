@@ -7,15 +7,6 @@ function replaceHTMLSpacing(string) {
 }
 
 
-// change now popup.html to another html
-function changePopup(htmlFilePath) {
-    window.location.href = htmlFilePath;
-    chrome.browserAction.setPopup({
-        popup: htmlFilePath
-    });
-}
-
-
 // Get all non-empty child text nodes recursively.
 function getAllChildTextNodes(rootNode) {
     var textNodes = [];
@@ -38,14 +29,11 @@ function createElementFromHTML(htmlString) {
 }
 
 
-function noti(msg, callback) {
+function noti(msg) {
     chrome.notifications.create("auto-noti-" + Math.random(), {
         type: "basic",
         iconUrl: "images/icon_128.png",
         title: "Codify",
         message: msg
-    }, callback);
+    });
 }
-
-
-export {replaceHTMLSpacing, changePopup, getAllChildTextNodes, createElementFromHTML, noti};

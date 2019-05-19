@@ -122,7 +122,7 @@ const reqCompile = compile => {
         let xmlHttp = new XMLHttpRequest();
         xmlHttp.open('POST', TARGET_ADDRESS + '/api/compile', true);
         xmlHttp.setRequestHeader(
-            'content-type',
+            'Content-Type',
             'application/json; charset=utf-8'
         );
         xmlHttp.send(compile);
