@@ -43,11 +43,11 @@ highlightSwitch.onclick = function() {
 };
 
 // facilitate 'tab' key in textarea
-var tabFunc = function(element) {
+let tabFunc = function(element) {
     if (element.keyCode === 9) {
 
         // get caret position/selection
-        var val = this.value,
+        let val = this.value,
             start = this.selectionStart,
             end = this.selectionEnd;
 
