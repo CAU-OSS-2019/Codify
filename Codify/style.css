@@ -20,8 +20,12 @@ body::-webkit-scrollbar {
     width: 1px;
 }
 
-body div + div {
+div + div {
     margin-top: 10px;
+}
+
+.CodeMirror * {
+    margin-top: 0 !important;
 }
 
 label {
@@ -147,4 +151,10 @@ select#lang {
 
 .mr-2 {
     margin-right: 1em;
+}
+
+.CodeMirror {
+    width: 95vw;
+    margin: 0 auto;
+    border: 1px solid #999;
 }
