@@ -28,7 +28,6 @@ label {
     /* width: 25px; */
     font-size: 1.4em;
     display: inline-block;
-    text-align: right;
 }
 
 label.section-label {
@@ -54,10 +53,6 @@ textarea#code {
 
 textarea#input {
     height: 15vh;
-}
-
-textarea#result {
-    height: 60vh;
 }
 
 .compile-buttons {

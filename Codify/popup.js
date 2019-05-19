@@ -1,7 +1,13 @@
 'use strict';
 
-import connecting from "./connect_extension_and_server.js";
-import {save2Storage, load2Textarea, load2Element} from "./storage.js";
+import {
+    saveStorage,
+    load2Textarea,
+    load2Element
+} from "./storage.js";
+import {
+    changePopup
+} from "./util.js";
 
 let codeTextArea = document.getElementById('code');
 let stdinTextArea = document.getElementById('input');
@@ -10,7 +16,7 @@ let languageSelect = document.getElementById('lang');
 let highlightSwitch = document.getElementById('myonoffswitch');
 
 // get storaged language select
-load2Element(languageSelect, 'languageSelect', function(elem, data) {
+load2Element(languageSelect, 'languageSelect', function (elem, data) {
     if (data !== undefined)
         elem.selectedIndex = data;
 });
@@ -22,28 +28,40 @@ load2Textarea(codeTextArea, 'storagedCode');
 load2Textarea(stdinTextArea, 'storagedStdin');
 
 // get toggle switch checked info from chrome storage
-load2Element(highlightSwitch, 'autoHighlight', function(elem, data) {
-    elem.checked = data;
+load2Element(highlightSwitch, 'autoHighlight', function (elem, data) {
+    if (data !== undefined)
+        elem.checked = data;
 });
 
 // save content of field when user change it
-languageSelect.onchange = function() {
-    save2Storage('languageSelect', languageSelect.selectedIndex);
+languageSelect.onchange = function () {
+    saveStorage({
+        languageSelect: languageSelect.selectedIndex
+    });
+    saveStorage({
+        lang: languageSelect.options[languageSelect.selectedIndex].id
+    });
 };
-codeTextArea.onchange = function() {
-    save2Storage('storagedCode', codeTextArea.value);
+codeTextArea.onchange = function () {
+    saveStorage({
+        storagedCode: codeTextArea.value
+    });
 };
-stdinTextArea.onchange = function() {
-    save2Storage('storagedStdin', stdinTextArea.value);
+stdinTextArea.onchange = function () {
+    saveStorage({
+        storagedStdin: stdinTextArea.value
+    });
 };
 
 // save toggle switch checked info when user click switch
-highlightSwitch.onclick = function() {
-    save2Storage('autoHighlight', highlightSwitch.checked);
+highlightSwitch.onclick = function () {
+    saveStorage({
+        autoHighlight: highlightSwitch.checked
+    });
 };
 
 // facilitate 'tab' key in textarea
-let tabFunc = function(element) {
+let tabFunc = function (element) {
     if (element.keyCode === 9) {
 
         // get caret position/selection
@@ -60,23 +78,20 @@ let tabFunc = function(element) {
         // prevent the focus lose
         return false;
     }
-  };
+};
 
 codeTextArea.onkeydown = tabFunc;
 stdinTextArea.onkeydown = tabFunc;
 
 // compile code in codeTextArea and print the result on resultTextArea
-compileButton.onclick = async function() {
-  let resultTextArea = document.getElementById('result');
-  let code = codeTextArea.value.replace(/\u00a0/g, " ").replace(/\u00c2/g, " ");
-  let lang = languageSelect.options[languageSelect.selectedIndex].id;
-  let input = document.getElementById('input').value;
-  let compileResult = await connecting(lang, code, input);
-  if(compileResult.output === undefined) {
-      resultTextArea.value = compileResult.message;
-  } else if(compileResult.output === ""){
-      resultTextArea.value = "Runtime Error";
-  } else {
-      resultTextArea.value = compileResult.output;
-  }
+compileButton.onclick = function () {
+    saveStorage({
+        languageSelect: languageSelect.selectedIndex,
+        lang: languageSelect.options[languageSelect.selectedIndex].id,
+        storagedCode: codeTextArea.value,
+        storagedStdin: stdinTextArea.value,
+        readyToCompile: true
+    }, function () {
+        changePopup("result.html");
+    });
 };
