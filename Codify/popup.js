@@ -3,13 +3,27 @@
 import connecting from "./connect_extension_and_server.js";
 
 let codeTextArea = document.getElementById('code');
+let stdinTextArea = document.getElementById('input');
 let compileButton = document.getElementById('compile');
 let languageSelect = document.getElementById('lang');
 let highlightSwitch = document.getElementById('myonoffswitch');
 
+// get storaged language select
+chrome.storage.sync.get('languageSelect', function(item) {
+    if (item.languageSelect !== undefined)
+        languageSelect.selectedIndex = item.languageSelect;
+});
+
 // get storaged code from chrome storage
-chrome.storage.sync.get('storagedCode', function(item){
-    codeTextArea.value = item.storagedCode;
+chrome.storage.sync.get('storagedCode', function(item) {
+    if (item.storagedCode !== undefined)
+        codeTextArea.value = item.storagedCode;
+});
+
+// get storaged stdin input from chrome storage
+chrome.storage.sync.get('storagedStdin', function(item){
+    if (item.storagedStdin !== undefined)
+        stdinTextArea.value = item.storagedStdin;
 });
 
 // get toggle switch checked info from chrome storage
