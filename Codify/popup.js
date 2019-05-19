@@ -21,8 +21,22 @@ load2Element(languageSelect, 'languageSelect', function (elem, data) {
         elem.selectedIndex = data;
 });
 
-// get storaged code from chrome storage
-load2Textarea(codeTextArea, 'storagedCode');
+// get storaged code from chrome storage & enable editor
+load2Textarea(codeTextArea, 'storagedCode', function() {
+    window.editor = CodeMirror.fromTextArea(codeTextArea, {
+        lineNumbers: true,
+        lineWrapping: true,
+        matchBrackets: true,
+        theme: "blackboard",
+        mode: "text/x-c++src",
+        value: codeTextArea.value
+    });
+    window.editor.on("change", function() {
+        saveStorage({
+            storagedCode: window.editor.getValue()
+        });
+    });
+});
 
 // get storaged stdin input from chrome storage
 load2Textarea(stdinTextArea, 'storagedStdin');
@@ -40,11 +54,6 @@ languageSelect.onchange = function () {
     });
     saveStorage({
         lang: languageSelect.options[languageSelect.selectedIndex].id
-    });
-};
-codeTextArea.onchange = function () {
-    saveStorage({
-        storagedCode: codeTextArea.value
     });
 };
 stdinTextArea.onchange = function () {
@@ -80,7 +89,6 @@ let tabFunc = function (element) {
     }
 };
 
-codeTextArea.onkeydown = tabFunc;
 stdinTextArea.onkeydown = tabFunc;
 
 // compile code in codeTextArea and print the result on resultTextArea
@@ -88,7 +96,7 @@ compileButton.onclick = function () {
     saveStorage({
         languageSelect: languageSelect.selectedIndex,
         lang: languageSelect.options[languageSelect.selectedIndex].id,
-        storagedCode: codeTextArea.value,
+        storagedCode: window.editor.getValue(),
         storagedStdin: stdinTextArea.value,
         readyToCompile: true
     }, function () {

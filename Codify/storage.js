@@ -6,26 +6,30 @@ function saveStorage(pair, callback) {
 }
 
 
-function load2Textarea(textarea, fieldName) {
+function load2Textarea(textarea, fieldName, callback) {
     chrome.storage.sync.get([fieldName], function(item) {
         if (item[fieldName] !== undefined)
             textarea.value = item[fieldName];
         else
             textarea.value = "";
+        if (callback !== undefined)
+            callback();
     });
 }
 
 
 function load2Element(element, fieldName, callback) {
     chrome.storage.sync.get([fieldName], function(item) {
-        callback(element, item[fieldName]);
+        if (callback !== undefined)
+            callback(element, item[fieldName]);
     });
 }
 
 
 function loadData(fieldName, callback) {
     chrome.storage.sync.get([fieldName], function(item) {
-        callback(fieldName);
+        if (callback !== undefined)
+            callback(fieldName);
     })
 }
 
