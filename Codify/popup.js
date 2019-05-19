@@ -31,11 +31,6 @@ load2Textarea(codeTextArea, 'storagedCode', function() {
         mode: "text/x-c++src",
         value: codeTextArea.value
     });
-    window.editor.on("change", function() {
-        saveStorage({
-            storagedCode: window.editor.getValue()
-        });
-    });
 });
 
 // get storaged stdin input from chrome storage
