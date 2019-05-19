@@ -36,43 +36,53 @@ chrome.storage.sync.get('autoHighlight', function (item) {
     }
 });
 
-// save content of codeTextArea when user change it
-codeTextArea.onchange = function(){
-  chrome.storage.sync.set({storagedCode: codeTextArea.value});
+// save content of field when user change it
+languageSelect.onchange = function(){
+    chrome.storage.sync.set({languageSelect: languageSelect.selectedIndex});
 };
+codeTextArea.onchange = function(){
+    chrome.storage.sync.set({storagedCode: codeTextArea.value});
+};
+stdinTextArea.onchange = function(){
+    chrome.storage.sync.set({storagedStdin: stdinTextArea.value});
+};
+
 
 // save toggle switch checked info when user click switch
 highlightSwitch.onclick = function () {
     if(highlightSwitch.checked){
-        chrome.storage.sync.set({ 'autoHighlight': true });
+        chrome.storage.sync.set({'autoHighlight': true});
     }
     else{
-        chrome.storage.sync.set({ 'autoHighlight': false });
+        chrome.storage.sync.set({'autoHighlight': false});
     }
 };
 
 // facilitate 'tab' key in textarea
-codeTextArea.onkeydown = function(element){
-  if (element.keyCode === 9) {
+var tabFunc = function(element){
+    if (element.keyCode === 9) {
 
-      // get caret position/selection
-      var val = this.value,
-          start = this.selectionStart,
-          end = this.selectionEnd;
+        // get caret position/selection
+        var val = this.value,
+            start = this.selectionStart,
+            end = this.selectionEnd;
 
-      // set textarea value to: text before caret + tab + text after caret
-      this.value = val.substring(0, start) + '\t' + val.substring(end);
+        // set textarea value to: text before caret + tab + text after caret
+        this.value = val.substring(0, start) + '\t' + val.substring(end);
 
-      // put caret at right position again
-      this.selectionStart = this.selectionEnd = start + 1;
+        // put caret at right position again
+        this.selectionStart = this.selectionEnd = start + 1;
 
-      // prevent the focus lose
-      return false;
-  }
-};
+        // prevent the focus lose
+        return false;
+    }
+  };
+
+codeTextArea.onkeydown = tabFunc;
+stdinTextArea.onkeydown = tabFunc;
 
 // compile code in codeTextArea and print the result on resultTextArea
- compileButton.onclick = async function(){
+compileButton.onclick = async function() {
   let resultTextArea = document.getElementById('result');
   let code = codeTextArea.value.replace(/\u00a0/g, " ").replace(/\u00c2/g, " ");
   let lang = languageSelect.options[languageSelect.selectedIndex].id;
@@ -85,4 +95,4 @@ codeTextArea.onkeydown = function(element){
   } else {
       resultTextArea.value = compileResult.output;
   }
- };
+};
