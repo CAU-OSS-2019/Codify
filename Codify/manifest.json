@@ -2,13 +2,13 @@
   "name": "Codify",
   "version": "1.0",
   "description": "Auto Code Detection and Highlight + Edit and Compile Code on Chrome",
-  "permissions": ["contextMenus", "storage", "tabs", "activeTab", "notifications"],
+  "permissions": ["contextMenus", "storage", "tabs", "activeTab", "notifications", "downloads"],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["js/codify/background.js"],
     "persistent": false
   },
   "browser_action": {
-    "default_popup": "popup.html",
+    "default_popup": "html/popup.html",
     "default_icon": {
       "16": "images/icon_16.png",
       "32": "images/icon_32.png",
@@ -20,9 +20,9 @@
     {
       "all_frames": true,
       "matches": ["*://*/*"],
-      "js": ["hljs.js", "detect1.js", "js/jquery-3.4.1.min.js", "click-to-codify.js", "util.browser.js"],
+      "js": ["js/hljs.js", "js/jquery-3.4.1.min.js", "js/codify/detect.js", "js/codify/click_to_codify.js", "js/codify/util.browser.js"],
       "run_at": "document_end",
-      "css": ["newButtonStyle.css", "css/all.min.css", "codify-selector.css", "github.min.css"]
+      "css": ["css/codify/newButtonStyle.css", "css/all.min.css", "css/codify/codify-selector.css", "css/codify/github.min.css"]
     }
   ],
   "web_accessible_resources": [
