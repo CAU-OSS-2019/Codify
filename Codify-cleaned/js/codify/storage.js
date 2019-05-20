@@ -20,17 +20,15 @@ function load2Textarea(textarea, fieldName, callback) {
 
 function load2Element(element, fieldName, callback) {
     chrome.storage.sync.get([fieldName], function (item) {
-        if (callback !== undefined)
-            callback(element, item[fieldName]);
+        callback(element, item[fieldName]);
     });
 }
 
 
 function loadData(fieldName, callback) {
     chrome.storage.sync.get([fieldName], function (item) {
-        if (callback !== undefined)
-            callback(fieldName);
-    })
+        callback(item[fieldName]);
+    });
 }
 
 
