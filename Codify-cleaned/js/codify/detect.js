@@ -59,6 +59,11 @@ function autoDetectC() {
         endChecks.push(Boolean(!blockDepth && (openCount || closeCount)));
     }
 
+    // Collapse adjacent code blocks.
+    for (i = 1; i < textNodes.length; i++)
+        if (endChecks[i - 1] && beginChecks[i])
+            endChecks[i - 1] = beginChecks[i] = false;
+
     for (i = 0; i < textNodes.length; i++) {
         if (codeBegan === false && beginChecks[i]) {
             codeBegan = true;
