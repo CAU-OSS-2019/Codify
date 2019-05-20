@@ -75,7 +75,7 @@ function autoDetectC() {
             codeBegan = false;
 
             // If code is too short, skip it.
-            if (i - beginIdx < 3)
+            if (i !== beginIdx && i - beginIdx < 3)
                 continue;
 
             window.codeCollection.push("");
