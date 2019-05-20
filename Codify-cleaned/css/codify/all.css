@@ -1,0 +1,22 @@
+html {
+    overflow-y: scroll;
+}
+
+body {
+    margin: 0;
+    border: 0;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+    width: 1px;
+    background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+body::-webkit-scrollbar-track-piece{
+    display: none;
+}
