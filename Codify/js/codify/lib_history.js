@@ -1,6 +1,10 @@
 'use strict';
 
 
+if (typeof browser === "undefined")
+    var browser = chrome;
+
+
 import {
     saveStorage,
     loadData
@@ -9,7 +13,7 @@ import {
 
 // save current code to history
 function addCodeToHistory(lang, langidx, code, stdin, callback) {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    browser.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         // get current tab's URL
         var activeURL = tabs[0].url;
         // get current date

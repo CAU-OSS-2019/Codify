@@ -1,6 +1,10 @@
 'use strict';
 
 
+if (typeof browser === "undefined")
+    var browser = chrome;
+
+
 import {
     saveStorage,
     load2Textarea,
@@ -101,7 +105,7 @@ function downloadSource() {
     let sourceStr = window.editor.getValue("\r\n");
     let blob = new Blob([sourceStr], {type: "text/plain"});
     let url = URL.createObjectURL(blob);
-    chrome.downloads.download({
+    browser.downloads.download({
         url: url,
         filename: guid() + "." + languageSelect.options[languageSelect.selectedIndex].id
     });
