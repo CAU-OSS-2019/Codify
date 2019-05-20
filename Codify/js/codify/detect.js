@@ -16,7 +16,7 @@ function addRunButton(codeNumber) {
     runBtn.onclick = function (e) {
         e.preventDefault();
         browser.storage.sync.set({"storagedCode": codeCollection[codeNumber - 1]});
-        chrome.extension.sendMessage({type: "noti", msg: "Codify 편집기에 추가되었습니다!"});
+        browser.extension.sendMessage({type: "noti", msg: "Codify 편집기에 추가되었습니다!"});
     };
     btnLoc.insertBefore(runBtn, btnLoc.firstChild);
 }
@@ -126,7 +126,7 @@ function init() {
     window.codeCollection = [];
 
     // Check whether auto highlight mode is on or not.
-    chrome.storage.sync.get('autoHighlight', function (item) {
+    browser.storage.sync.get('autoHighlight', function (item) {
         if (item.autoHighlight)
             // Detect C code.
             autoDetectC();
