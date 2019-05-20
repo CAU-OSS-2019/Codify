@@ -59,11 +59,12 @@
       <div class="button">
         <label for="lang" class="section-label">LANG: </label>
         <select id="lang" class="form-control" size="1">
-          <option id="c" selected>C (gcc main.c -O2 -std=c11)</option>
-          <option id="cpp">C++ (g++ main.cpp -O2 -std=gnu++14)</option>
+          <option id="c" selected>C (gcc -std=c11)</option>
+          <option id="cpp">C++ (g++ -std=gnu++14)</option>
         </select>
         <div class="compile-buttons">
           <button id="compile" class="btn btn-success" type="button"><i class="fas fa-play mr-1"></i>Run</button>
+          <button id="download" class="btn btn-primary" type="button"><i class="fas fa-download mr-1"></i>Download</button>
         </div>
         <div style="clear: both;"></div>
       </div>

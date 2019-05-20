@@ -1,4 +1,5 @@
 .table {
+    table-layout: fixed;
     width: 95vw;
     margin: 0 auto;
 }
@@ -15,6 +16,7 @@
 
 #history-section td {
     white-space: pre-wrap;
+    word-break: break-all;
     cursor: pointer;
 }
 
