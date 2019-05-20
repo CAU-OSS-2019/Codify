@@ -2,7 +2,7 @@
   "name": "Codify",
   "version": "1.0",
   "description": "Auto Code Detection and Highlight + Edit and Compile Code on Chrome",
-  "permissions": ["contextMenus", "storage", "tabs", "activeTab", "notifications"],
+  "permissions": ["contextMenus", "storage", "tabs", "activeTab", "notifications", "downloads"],
   "background": {
     "scripts": ["js/codify/background.js"],
     "persistent": false

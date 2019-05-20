@@ -2,7 +2,8 @@
 
 
 import {
-    noti
+    noti,
+    changePopup
 } from "/js/codify/util.js";
 
 
@@ -23,5 +24,13 @@ $(document).ready(function () {
         noti("포맷팅할 영역을 더블클릭하세요.", function () {
             window.close();
         });
+    });
+
+    $("#a-editor").click(function () {
+        changePopup("/html/popup.html");
+    });
+
+    $("#a-logger").click(function () {
+        changePopup("/html/history.html");
     });
 });

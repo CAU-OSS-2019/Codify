@@ -28,7 +28,7 @@ function autoDetectC() {
         /^[^\w가-힣ㄱ-ㅎ]*#[^\w가-힣ㄱ-ㅎ]*include/g,
         /^[^\w가-힣ㄱ-ㅎ]*#[^\w가-힣ㄱ-ㅎ]*pragma[^\w가-힣ㄱ-ㅎ]+[a-zA-Z_]\w*/g,
         /^[^\w가-힣ㄱ-ㅎ]*#[^\w가-힣ㄱ-ㅎ]*define[^\w가-힣ㄱ-ㅎ]+[a-zA-Z_]\w*/g,
-        /^[^\w가-힣ㄱ-ㅎ]*(bool|char|signed|unsigned|short|int|long|float|double|struct|union|void)[ \t\u00a0\u00c2]+[a-zA-Z_]\w*[^\w가-힣ㄱ-ㅎ]*\(/g
+        /^[^\w가-힣ㄱ-ㅎ]*(bool|char|signed|unsigned|short|int|long|float|double|struct|union|void)[^\w가-힣ㄱ-ㅎ]+[a-zA-Z_]\w*[^\w가-힣ㄱ-ㅎ]*\(/g
     ];
 
     var textNodes = getAllChildTextNodes(document.body);

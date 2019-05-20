@@ -1,6 +1,12 @@
 'use strict';
 
 
+import {
+    saveStorage,
+    load2Element
+} from "/js/codify/storage.js";
+
+
 let highlightSwitch = document.getElementById('myonoffswitch');
 
 

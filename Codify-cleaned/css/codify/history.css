@@ -1,0 +1,23 @@
+.table {
+    width: 95vw;
+    margin: 0 auto;
+}
+
+#clean-log {
+    display: block;
+    margin-right: 2.5vw;
+    float: right;
+}
+
+#history-section a:link, #history-section a:visited, #history-section a:active, #history-section a:hover {
+    color: aqua;
+}
+
+#history-section td {
+    white-space: pre-wrap;
+    cursor: pointer;
+}
+
+tbody tr:hover * {
+    color: black !important;
+}

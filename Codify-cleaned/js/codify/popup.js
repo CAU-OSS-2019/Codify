@@ -8,6 +8,9 @@ import {
 import {
     changePopup
 } from "/js/codify/util.js";
+import {
+    addCodeToHistory
+} from "/js/codify/lib_history.js";
 
 let codeTextArea = document.getElementById('code');
 let stdinTextArea = document.getElementById('input');
@@ -44,11 +47,6 @@ languageSelect.onchange = function () {
         lang: languageSelect.options[languageSelect.selectedIndex].id
     });
 };
-stdinTextArea.onchange = function () {
-    saveStorage({
-        storagedStdin: stdinTextArea.value
-    });
-};
 
 // facilitate 'tab' key in textarea
 let tabFunc = function (element) {
@@ -74,13 +72,16 @@ stdinTextArea.onkeydown = tabFunc;
 
 // compile code in codeTextArea and print the result on resultTextArea
 compileButton.onclick = function () {
-    saveStorage({
+    let saved = {
         languageSelect: languageSelect.selectedIndex,
         lang: languageSelect.options[languageSelect.selectedIndex].id,
         storagedCode: window.editor.getValue(),
         storagedStdin: stdinTextArea.value,
         readyToCompile: true
-    }, function () {
-        changePopup("/html/result.html");
+    };
+    saveStorage(saved, function () {
+        addCodeToHistory(saved.lang, saved.languageSelect, saved.storagedCode, saved.storagedStdin, function () {
+            changePopup("/html/result.html");
+        });
     });
 };
