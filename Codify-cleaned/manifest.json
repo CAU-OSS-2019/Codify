@@ -20,7 +20,7 @@
     {
       "all_frames": true,
       "matches": ["*://*/*"],
-      "js": ["js/hljs.js", "js/jquery-3.4.1.min.js", "js/codify/detect1.js", "js/codify/click_to_codify.js", "js/codify/util.browser.js"],
+      "js": ["js/hljs.js", "js/jquery-3.4.1.min.js", "js/codify/detect.js", "js/codify/click_to_codify.js", "js/codify/util.browser.js"],
       "run_at": "document_end",
       "css": ["css/codify/newButtonStyle.css", "css/all.min.css", "css/codify/codify-selector.css", "css/codify/github.min.css"]
     }
