@@ -87,9 +87,8 @@ function autoDetectC() {
                 newParent = document.createElement("code");
                 codeCollection[codeCollection.length - 1] += node.nodeValue + "\n";
                 newParent.className = "codify codify-code codify-c-code cpp";
-                if (j === beginIdx) {
+                if (j === beginIdx)
                     newParent.id = "codify-c-code-" + codeNumber;
-                }
                 newParent.style.display = "inline";
                 newParent.style.padding = "0";
                 newParent.style.margin = "0";
@@ -103,11 +102,11 @@ function autoDetectC() {
             // A little auto indenting & save to global object.
             indented = hljs.highlight("cpp", codeCollection[codeCollection.length - 1], true, false);
             codeCollection[codeCollection.length - 1] = createElementFromHTML(indented.value).innerText;
-
-            // Highlight found area.
-            document.querySelectorAll('.codify').forEach(block => hljs.highlightBlock(block));
         }
     }
+
+    // Highlight found area.
+    document.querySelectorAll('.codify').forEach(block => hljs.highlightBlock(block));
 
     for (i = 1; i <= codeNumber; i++)
         addRunButton(i);
