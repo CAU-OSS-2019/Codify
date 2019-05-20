@@ -1,20 +1,26 @@
 'use strict';
 
+
 import {
     saveStorage,
     load2Textarea,
     load2Element
 } from "/js/codify/storage.js";
+
 import {
-    changePopup
+    changePopup,
+    guid
 } from "/js/codify/util.js";
+
 import {
     addCodeToHistory
 } from "/js/codify/lib_history.js";
 
+
 let codeTextArea = document.getElementById('code');
 let stdinTextArea = document.getElementById('input');
 let compileButton = document.getElementById('compile');
+let downloadButton = document.getElementById('download');
 let languageSelect = document.getElementById('lang');
 
 // get storaged language select
@@ -85,3 +91,18 @@ compileButton.onclick = function () {
         });
     });
 };
+
+
+downloadButton.onclick = downloadSource;
+
+
+// download source code to file
+function downloadSource() {
+    let sourceStr = window.editor.getValue("\r\n");
+    let blob = new Blob([sourceStr], {type: "text/plain"});
+    let url = URL.createObjectURL(blob);
+    chrome.downloads.download({
+        url: url,
+        filename: guid() + "." + languageSelect.options[languageSelect.selectedIndex].id
+    });
+}
