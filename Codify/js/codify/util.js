@@ -1,6 +1,10 @@
 'use strict';
 
 
+if (typeof browser === "undefined")
+    var browser = chrome;
+
+
 // remove invalid char from html to compile successfully
 function replaceHTMLSpacing(string) {
     return string.replace(/[\u0080-\u00ff]/g, " ");
@@ -10,7 +14,7 @@ function replaceHTMLSpacing(string) {
 // change now popup.html to another html
 function changePopup(htmlFilePath) {
     window.location.href = htmlFilePath;
-    chrome.browserAction.setPopup({
+    browser.browserAction.setPopup({
         popup: htmlFilePath
     });
 }
@@ -39,7 +43,7 @@ function createElementFromHTML(htmlString) {
 
 
 function noti(msg, callback) {
-    chrome.notifications.create("auto-noti-" + Math.random(), {
+    browser.notifications.create("auto-noti-" + Math.random(), {
         type: "basic",
         iconUrl: "/images/icon_128.png",
         title: "Codify",

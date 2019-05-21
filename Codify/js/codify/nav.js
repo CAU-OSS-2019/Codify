@@ -1,6 +1,10 @@
 "use strict";
 
 
+if (typeof browser === "undefined")
+    var browser = chrome;
+
+
 import {
     noti,
     changePopup
@@ -9,7 +13,7 @@ import {
 
 $(document).ready(function () {
     $("#a-selector").click(function () {
-        chrome.tabs.executeScript(null, {
+        browser.tabs.executeScript(null, {
             code: 'if (window.codifySelectOn) { \n' +
                 '   $("*").removeClass("codify-select-mode"); \n' +
                 '   window.codifySelectOn = false; \n' +
