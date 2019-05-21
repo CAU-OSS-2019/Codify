@@ -1,9 +1,9 @@
 "use strict";
 
+// For cross browser compatibility.
 if (typeof browser === "undefined")
     var browser = chrome;
 
-// Currently developing.
 // Add a button above the detected code.
 // The button changes browser.storage when clicked so the extension can use it.
 function addRunButton(codeNumber) {
@@ -15,8 +15,8 @@ function addRunButton(codeNumber) {
     runBtn.style.display = "block";
     runBtn.onclick = function (e) {
         e.preventDefault();
-        browser.storage.sync.set({ "storagedCode": codeCollection[codeNumber - 1] });
-        chrome.extension.sendMessage({ type: "noti", msg: "Codify 편집기에 추가되었습니다!" });
+        browser.storage.sync.set({"storagedCode": codeCollection[codeNumber - 1]});
+        browser.extension.sendMessage({type: "noti", msg: "Codify 편집기에 추가되었습니다!"});
     };
     btnLoc.insertBefore(runBtn, btnLoc.firstChild);
 }
@@ -46,7 +46,11 @@ function autoDetectC() {
     var beginIdx;
     var codeNumber = 0;
 
-    var i;
+    var node;
+    var newParent;
+    var indented;
+
+    var i, j;
 
     textNodes.forEach(node =>
         beginChecks.push(codeBeginPatterns.some(p => p.test(node.nodeValue))));
@@ -57,63 +61,58 @@ function autoDetectC() {
         closeCount = (val.match(/}/g) || []).length;
         blockDepth += openCount - closeCount;
         endChecks.push(Boolean(!blockDepth && (openCount || closeCount)));
-    }
-
-    // Collapse adjacent code blocks.
-    for (i = 1; i < textNodes.length; i++)
-        if (endChecks[i - 1] && beginChecks[i])
+        // Collapse adjacent code blocks.
+        if (i && endChecks[i - 1] && beginChecks[i])
             endChecks[i - 1] = beginChecks[i] = false;
+    }
 
     for (i = 0; i < textNodes.length; i++) {
         if (codeBegan === false && beginChecks[i]) {
             codeBegan = true;
             beginIdx = i;
         } else if (codeBegan === true && endChecks[i]) {
-            // found some code
+            // Found some code.
             codeBegan = false;
 
-            // if code is too short, skip it
-            if (i - beginIdx < 3) continue;
+            // If code is too short, skip it.
+            if (i !== beginIdx && i - beginIdx < 3)
+                continue;
 
             window.codeCollection.push("");
             codeNumber++;
 
-            // change style and save code
-            for (var j = beginIdx; j <= i; j++) {
-                var tt = textNodes[j];
-                var new_parent = document.createElement("code");
-                codeCollection[codeCollection.length - 1] = codeCollection[codeCollection.length - 1] + tt.nodeValue + "\n";
-                new_parent.className = "codify codify-code codify-c-code cpp";
-                if (j === beginIdx) {
-                    new_parent.id = "codify-c-code-" + codeNumber;
-                }
-                new_parent.style.display = "inline";
-                new_parent.style.padding = "0";
-                new_parent.style.margin = "0";
-                new_parent.style.background = "transparent";
-                new_parent.textContent = tt.nodeValue;
-                new_parent.style.fontFamily = "'Source Code Pro'";
-                new_parent.style.letterSpacing = "-0.7px";
-                tt.replaceWith(new_parent);
+            // Change style and save code.
+            for (j = beginIdx; j <= i; j++) {
+                node = textNodes[j];
+                newParent = document.createElement("code");
+                codeCollection[codeCollection.length - 1] += node.nodeValue + "\n";
+                newParent.className = "codify codify-code codify-c-code cpp";
+                if (j === beginIdx)
+                    newParent.id = "codify-c-code-" + codeNumber;
+                newParent.style.display = "inline";
+                newParent.style.padding = "0";
+                newParent.style.margin = "0";
+                newParent.style.background = "transparent";
+                newParent.textContent = node.nodeValue;
+                newParent.style.fontFamily = "'Source Code Pro'";
+                newParent.style.letterSpacing = "-0.7px";
+                node.replaceWith(newParent);
             }
 
-            // a little auto indenting & save to global object
-            var indented = hljs.highlight("cpp", codeCollection[codeCollection.length - 1], true, false);
+            // A little auto indenting & save to global object.
+            indented = hljs.highlight("cpp", codeCollection[codeCollection.length - 1], true, false);
             codeCollection[codeCollection.length - 1] = createElementFromHTML(indented.value).innerText;
-
-            // highlight found area
-            document.querySelectorAll('.codify').forEach((block) => {
-                hljs.highlightBlock(block);
-            });
         }
     }
 
-    for (i = 1; i < codeNumber + 1; i++) {
+    // Highlight found area.
+    document.querySelectorAll('.codify').forEach(block => hljs.highlightBlock(block));
+
+    for (i = 1; i <= codeNumber; i++)
         addRunButton(i);
-    }
 }
 
-// Init highlight process
+// Init highlighting process.
 function init() {
     var link = document.createElement("link");
     link.href = "https://fonts.googleapis.com/css?family=Source+Code+Pro";
@@ -122,20 +121,19 @@ function init() {
     document.getElementsByTagName("head")[0].appendChild(link);
 
     hljs.initHighlightingOnLoad();
-    hljs.configure({ useBR: true });
+    hljs.configure({useBR: true});
     window.codeCollection = [];
 
-    // check whether auto highlight mode is on or not
-    chrome.storage.sync.get('autoHighlight', function (item) {
-        if (item.autoHighlight) {
+    // Check whether auto highlight mode is on or not.
+    browser.storage.sync.get('autoHighlight', function (item) {
+        if (item.autoHighlight)
             // Detect C code.
             autoDetectC();
-        }
     });
 }
 
 
-// do process when loading is finish
+// Do process when loading is finished.
 window.onload = function () {
     init();
 }

@@ -7,12 +7,14 @@ function replaceHTMLSpacing(string) {
 }
 
 
-// Get all non-empty child text nodes recursively.
+// Get all non-empty child text nodes excluding style, script nodes recursively.
 function getAllChildTextNodes(rootNode) {
     var textNodes = [];
 
     for (var node = rootNode.firstChild; node; node = node.nextSibling)
-        if (node.nodeType === 3 && /\S/.test(node.nodeValue))
+        if (node.nodeType === 3
+            && /\S/.test(node.nodeValue)
+            && !/(style|script)/i.test(node.parentNode.nodeName))
             textNodes.push(node);
         else
             textNodes = textNodes.concat(getAllChildTextNodes(node));
