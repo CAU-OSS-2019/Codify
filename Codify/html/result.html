@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+  <head>
+      <meta charset="utf-8" />
+      <!-- bootstrap -->
+      <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.min.css">
+      <script src="/js/jquery-3.4.1.min.js"></script>
+      <script src="/js/bootstrap.min.js"></script>
+      <!-- font awesome -->
+      <link rel="stylesheet" type="text/css" href="/css/all.min.css">
+      <!-- custom -->
+      <link rel="stylesheet" type="text/css" href="/css/codify/all.css">
+      <link rel="stylesheet" type="text/css" href="/css/codify/style.css">
+      <link rel="stylesheet" type="text/css" href="/css/codify/result.css">
+      <link rel="stylesheet" type="text/css" href="/css/codify/loading.css">
+  </head>
+
+  <body>
+    <span class="titlebar">
+      Codify ver.1.0
+    </span>
+
+    <div id="loading"><img id="loading-image" src="/images/loader2.gif" alt="Loading..." /></div>
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span id="navbar-onoff" class="navbar-brand">
+            <div class="onoffswitch">
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+              <label class="onoffswitch-label" for="myonoffswitch">
+                  <span class="onoffswitch-inner"></span>
+                  <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+          </span>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a id="a-editor" href="#">Editor</a></li>
+            <li><a id="a-selector" href="#">Selector</a></li>
+            <li><a id="a-logger" href="#">Logger</a></li>
+            <li><a href="#">Setting</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div>
+      <label id="compile-header" class="section-label">STATUS:</label>
+
+      <span id="success" class="compile-label label label-success">SUCCESS</span>
+      <span id="error" class="compile-label label label-danger">ERROR</span>
+      <span id="wait" class="compile-label label label-default">WAIT</span>
+    </div>
+
+    <div>
+      <label for="result" class="section-label">PROGRAM OUTPUT:</label>
+      <textarea id="result" style="resize: none" readonly="readonly"></textarea>
+    </div>
+
+    <div id="LastLine">
+      <div class="button">
+        <div class="return-button">
+          <button id="return" class="btn btn-primary" type="button"><i class="fas fa-undo-alt mr-1"></i>RETURN</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/js/codify/html_all.js"></script>
+    <script type="module" src="/js/codify/result.js"></script>
+    <script type="module" src="/js/codify/nav.js"></script>
+  </body>
+</html>

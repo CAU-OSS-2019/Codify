@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+  <head>
+      <meta charset="utf-8" />
+      <!-- bootstrap -->
+      <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.min.css">
+      <script src="/js/jquery-3.4.1.min.js"></script>
+      <script src="/js/bootstrap.min.js"></script>
+      <!-- font awesome -->
+      <link rel="stylesheet" type="text/css" href="/css/all.min.css">
+      <!-- codemirror -->
+      <link rel="stylesheet" href="/mirror/lib/codemirror.css">
+      <link rel="stylesheet" href="/mirror/theme/blackboard.css">
+      <script src="/mirror/lib/codemirror.js"></script>
+      <script src="/mirror/mode/clike/clike.js"></script>
+      <script src="/mirror/mode/meta.js"></script>
+      <!-- custom -->
+      <link rel="stylesheet" type="text/css" href="/css/codify/all.css">
+      <link rel="stylesheet" type="text/css" href="/css/codify/style.css">
+  </head>
+
+  <body>
+    <span class="titlebar">
+      Codify ver.1.0
+    </span>
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span id="navbar-onoff" class="navbar-brand">
+            <div class="onoffswitch">
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+              <label class="onoffswitch-label" for="myonoffswitch">
+                  <span class="onoffswitch-inner"></span>
+                  <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+          </span>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a id="a-editor" href="#">Editor</a></li>
+            <li><a id="a-selector" href="#">Selector</a></li>
+            <li><a id="a-logger" href="#">Logger</a></li>
+            <li><a href="#">Setting</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="firstline">
+      <div class="button">
+        <label for="lang" class="section-label">LANG: </label>
+        <select id="lang" class="form-control" size="1">
+          <option id="c" selected>C (gcc -std=c11)</option>
+          <option id="cpp">C++ (g++ -std=gnu++14)</option>
+        </select>
+        <div class="compile-buttons">
+          <button id="compile" class="btn btn-success" type="button"><i class="fas fa-play mr-1"></i>Run</button>
+          <button id="download" class="btn btn-primary" type="button"><i class="fas fa-download mr-1"></i>Download</button>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+
+    <div>
+      <label for="code" class="section-label">CODE:</label>
+      <textarea id="code" style="resize: none"></textarea>
+    </div>
+    <div>
+      <label for="input" class="section-label">STDIN:</label>
+      <textarea id="input" style="resize: none"></textarea>
+    </div>
+
+    <script type="module" src="/js/codify/html_all.js"></script>
+    <script type="module" src="/js/codify/popup.js"></script>
+    <script type="module" src="/js/codify/nav.js"></script>
+  </body>
+</html>
