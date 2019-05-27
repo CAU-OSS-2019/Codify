@@ -94,7 +94,7 @@ function autoDetectC() {
                 newParent.style.margin = "0";
                 newParent.style.background = "transparent";
                 newParent.textContent = node.nodeValue;
-                newParent.style.fontFamily = "'Source Code Pro'";
+                newParent.style.fontFamily = "'Codify Source Code Pro'";
                 newParent.style.letterSpacing = "-0.7px";
                 node.replaceWith(newParent);
             }
@@ -114,12 +114,6 @@ function autoDetectC() {
 
 // Init highlighting process.
 function init() {
-    var link = document.createElement("link");
-    link.href = "https://fonts.googleapis.com/css?family=Source+Code+Pro";
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    document.getElementsByTagName("head")[0].appendChild(link);
-
     hljs.initHighlightingOnLoad();
     hljs.configure({useBR: true});
     window.codeCollection = [];
