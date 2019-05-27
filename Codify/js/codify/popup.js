@@ -42,6 +42,10 @@ load2Textarea(codeTextArea, 'storagedCode', function () {
         theme: "blackboard",
         mode: "text/x-c++src",
         value: codeTextArea.value
+    }).on('change', editor => {
+        saveStorage({
+            storagedCode: editor.getValue()
+        });
     });
 });
 
