@@ -79,3 +79,18 @@ class CompileResult(View):
             response = HttpResponse(result, status=status_code)
             response["Content-Type"] = "application/json; charset=utf-8"
             return response
+
+
+# Get Supported Language API View
+class SupportedLanguage(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = json.dumps([i[0] for i in models.Source.LANG_CHOICES])
+
+        except:
+            return HttpResponse("404 Not Found", status=404)
+
+        # return response with json header
+        response = HttpResponse(result)
+        response["Content-Type"] = "application/json; charset=utf-8"
+        return response
