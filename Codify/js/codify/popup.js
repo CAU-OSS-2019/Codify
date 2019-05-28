@@ -110,3 +110,10 @@ function downloadSource() {
         filename: guid() + "." + languageSelect.options[languageSelect.selectedIndex].id
     });
 }
+
+// maintain editor content when popup closed
+window.onblur = function(){
+    saveStorage({
+        storagedCode: window.editor.getValue()
+    });
+}
