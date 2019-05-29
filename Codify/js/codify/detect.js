@@ -87,6 +87,7 @@ function autoDetectC() {
         if (codeBegan === false && beginChecks[i]) {
             codeBegan = true;
             beginIdx = i;
+            i--;
         } else if (codeBegan === true && endChecks[i]) {
             // Found some code.
             codeBegan = false;
