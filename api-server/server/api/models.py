@@ -17,3 +17,4 @@ class Source(models.Model):
     output = models.TextField(blank=True)
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=3)
     created_date = models.DateTimeField(auto_now_add=True)
+    ip = models.GenericIPAddressField()
