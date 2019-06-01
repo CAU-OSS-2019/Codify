@@ -1,3 +1,4 @@
 django<2.2
 django-background-tasks
 django-cors-headers
+django-ipware

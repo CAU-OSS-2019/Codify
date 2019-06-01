@@ -4,7 +4,7 @@ from django.http.response import HttpResponse
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from . import models, compile_tasks
+from . import models, compile_tasks, utils
 
 
 # Main View
