@@ -21,17 +21,26 @@ function addRunButton(codeNumber) {
     btnLoc.insertBefore(runBtn, btnLoc.firstChild);
 }
 
+// Check if current page's domain is in the blacklist.
+function isDomainBlacklisted() {
+    var blacklist = [
+        "stackoverflow.com",
+        "github.com"
+    ];
+
+    return blacklist.some(d => location.hostname.includes(d));
+}
+
 // Detect C code and wrap it with code element.
 function autoDetectC() {
     var codeBeginPatterns = [
-        // /^[ \t\u00a0\u00c2]*#[ \t\u00a0\u00c2]*include[ \t\u00a0\u00c2]*(<|")[^>"]+(>|")[ \t\u00a0\u00c2]*$/g,
-        /^[^\w가-힣ㄱ-ㅎ]*#[^\w가-힣ㄱ-ㅎ]*include/g,
-        /^[^\w가-힣ㄱ-ㅎ]*#[^\w가-힣ㄱ-ㅎ]*pragma[^\w가-힣ㄱ-ㅎ]+[a-zA-Z_]\w*/g,
-        /^[^\w가-힣ㄱ-ㅎ]*#[^\w가-힣ㄱ-ㅎ]*define[^\w가-힣ㄱ-ㅎ]+[a-zA-Z_]\w*/g,
-        /^[^\w가-힣ㄱ-ㅎ]*(bool|char|signed|unsigned|short|int|long|float|double|struct|union|void)[^\w가-힣ㄱ-ㅎ]+[a-zA-Z_]\w*[^\w가-힣ㄱ-ㅎ]*\(/g
+        /^\s*#\s*include/g,
+        /^\s*#\s*pragma\s+[a-zA-Z_]\w*/g,
+        /^\s*#\s*define\s+[a-zA-Z_]\w*/g,
+        /^\s*(bool|char|signed|unsigned|short|int|long|float|double|struct|union|void)\s+[a-zA-Z_]\w*\s*\(/g
     ];
 
-    var textNodes = getAllChildTextNodes(document.body);
+    var textNodes;
 
     var beginChecks = [];
     var endChecks = [];
@@ -52,9 +61,16 @@ function autoDetectC() {
 
     var i, j;
 
+    // If the website is not supported, stop detecting.
+    if (isDomainBlacklisted())
+        return;
+
+    // Fill beginChecks array.
+    textNodes = getAllChildTextNodes(document.body);
     textNodes.forEach(node =>
         beginChecks.push(codeBeginPatterns.some(p => p.test(node.nodeValue))));
 
+    // Fill endChecks array.
     for (i = 0; i < textNodes.length; i++) {
         val = textNodes[i].nodeValue;
         openCount = (val.match(/{/g) || []).length;
@@ -66,10 +82,12 @@ function autoDetectC() {
             endChecks[i - 1] = beginChecks[i] = false;
     }
 
+    // Formatting
     for (i = 0; i < textNodes.length; i++) {
         if (codeBegan === false && beginChecks[i]) {
             codeBegan = true;
             beginIdx = i;
+            i--;
         } else if (codeBegan === true && endChecks[i]) {
             // Found some code.
             codeBegan = false;
@@ -108,6 +126,7 @@ function autoDetectC() {
     // Highlight found area.
     document.querySelectorAll('.codify').forEach(block => hljs.highlightBlock(block));
 
+    // Add "Edit with Codify" button.
     for (i = 1; i <= codeNumber; i++)
         addRunButton(i);
 }
