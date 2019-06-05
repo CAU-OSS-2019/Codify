@@ -4,7 +4,9 @@ from django.http.response import HttpResponse
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from . import models, compile_tasks
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+from . import models, compile_tasks, utils
 
 
 # Main View
@@ -32,11 +34,19 @@ class Compile(View):
             else:
                 raise ValueError
 
+            # prevent too many requests
+            client_ip = utils.get_real_ip(request)
+            base_datetime = timezone.now() - timezone.timedelta(seconds=1)
+            if models.Source.objects.filter(ip=client_ip, created_date__gte=base_datetime).exists():
+                raise ValidationError("Too many requests")
+
             # save model instance
             source = models.Source()
             source.lang = request_json.get("lang")
             source.code = request_json.get("code")
             source.stdin = request_json.get("stdin", "")
+            source.ip = client_ip
+            source.full_clean()
             source.save()
 
             # activate background compile tasks (async)
