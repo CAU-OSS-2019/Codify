@@ -23,4 +23,6 @@ urlpatterns = [
     path("compile", api_views.Compile.as_view(), name="api-compile"),
     # Compile Result Check API from unique source code ID
     path("result/<int:id>", api_views.CompileResult.as_view(), name="api-result"),
+    # Get Supported Language API from Source model
+    path("lang", api_views.SupportedLanguage.as_view(), name="api-lang"),
 ]
