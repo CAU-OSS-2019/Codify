@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Get ascii Characters numbers and punctuation (minus quote characters as they could terminate string).
 
 _secret_key_string = ''.join([string.ascii_letters, string.digits, string.punctuation]).replace('\'', '').replace('"', '').replace('\\', '')
-
+SECRET_KEY = ''.join([random.SystemRandom().choice(_secret_key_string) for i in range(50)])
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'api',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
