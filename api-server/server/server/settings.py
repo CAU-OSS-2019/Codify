@@ -23,8 +23,10 @@ _secret_key_string = ''.join([string.ascii_letters, string.digits, string.punctu
 
 SECRET_KEY = ''.join([random.SystemRandom().choice(_secret_key_string) for i in range(50)])
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
