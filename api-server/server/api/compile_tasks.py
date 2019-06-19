@@ -38,6 +38,8 @@ def activate_compile():
                 exec_path = os.path.join(COMPILE_DOCKER_DIRECTORY, "c", "exec.sh")
             elif submit.lang == "cpp":
                 exec_path = os.path.join(COMPILE_DOCKER_DIRECTORY, "cpp", "exec.sh")
+            elif submit.lang == "python":
+                exec_path = os.path.join(COMPILE_DOCKER_DIRECTORY, "python", "exec.sh")
             else:
                 raise ValueError("Not Supported Language")
             result = os.system("%s %s %s %s %s" % (exec_path, file_path, stdin_path, stdout_path, stderr_path))
