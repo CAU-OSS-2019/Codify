@@ -27,12 +27,17 @@ docker stop -t ${time_limit} ${con}
 docker cp ${con}:/code/stdout.out "${stdout_file}"
 docker cp ${con}:/code/stderr.out "${stderr_file}"
 
-if [ "$(diff --ignore-trailing-space --ignore-space-change --ignore-blank-lines --text -q ${SCRIPTPATH}/stdout.out ${stdout_file} 2>&1)" = "" ]; then
-  echo "OK"
-  ret=0
-else
+while read line; do
+  echo $line
+done < ${stderr_file}
+
+#if [ "$(diff --ignore-trailing-space --ignore-space-change --ignore-blank-lines --text -q ${SCRIPTPATH}/stdout.out ${stdout_file} 2>&1)" = "" ]; then
+if [ -s ${stderr_file} ]; then
   echo "FAIL"
   ret=1
+else
+  echo "OK"
+  ret=0
 fi
 
 exit $ret
