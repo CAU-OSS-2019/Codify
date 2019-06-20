@@ -31,7 +31,6 @@ while read line; do
   echo $line
 done < ${stderr_file}
 
-#if [ "$(diff --ignore-trailing-space --ignore-space-change --ignore-blank-lines --text -q ${SCRIPTPATH}/stdout.out ${stdout_file} 2>&1)" = "" ]; then
 if [ -s ${stderr_file} ]; then
   echo "FAIL"
   ret=1
