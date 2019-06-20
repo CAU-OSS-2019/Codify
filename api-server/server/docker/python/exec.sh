@@ -11,20 +11,22 @@ time_limit=10 # seconds
 source_file=$1
 stdin_file=$2
 stdout_file=$3
+stderr_file=$4
 
-echo "" > ${SCRIPTPATH}/stdout.out
+echo "" > ${stdout_file}
+echo "" > ${stderr_file}
 
 if [ "$(docker ps -a -f name=${con} --format {{.Names}})" != "${con}" ]; then
   bash "${SCRIPTPATH}/docker-run.sh"
 fi
 
-docker cp "${source_file}" ${con}:/code/main.py > /dev/null
-docker cp "${stdin_file}" ${con}:/code/stdin.in > /dev/null
+docker cp "${source_file}" ${con}:/code/main.py
+docker cp "${stdin_file}" ${con}:/code/stdin.in
+docker start ${con}
+docker stop -t ${time_limit} ${con}
+docker cp ${con}:/code/stdout.out "${stdout_file}"
+docker cp ${con}:/code/stderr.out "${stderr_file}"
 
-docker start ${con} > /dev/null
-docker stop -t ${time_limit} ${con} > /dev/null
-
-#if [ "$(docker inspect ${con} --format='{{.State.ExitCode}}')" == "0" ]; then
 if [ "$(diff --ignore-trailing-space --ignore-space-change --ignore-blank-lines --text -q ${SCRIPTPATH}/stdout.out ${stdout_file} 2>&1)" = "" ]; then
   echo "OK"
   ret=0
@@ -32,7 +34,5 @@ else
   echo "FAIL"
   ret=1
 fi
-
-rm ${SCRIPTPATH}/stdout.out
 
 exit $ret

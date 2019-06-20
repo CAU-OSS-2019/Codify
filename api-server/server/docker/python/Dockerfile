@@ -4,4 +4,4 @@ RUN ["chmod", "777", "code"]
 RUN ["useradd", "tester"]
 WORKDIR /code
 USER tester
-CMD ["/bin/bash", "-c", "/usr/local/bin/python main.py < stdin.in | tail -c 11M > stdout.out"]
+CMD ["/bin/bash", "-c", "/usr/local/bin/python3 main.py < stdin.in tail -c 11M > stdout.out 2 > stderr.out"]
