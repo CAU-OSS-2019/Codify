@@ -1,0 +1,155 @@
+body {
+    width: 500px;
+    height: 600px;
+    font-family: sans-serif;
+    font-size: 12px;
+    background-color: #fff;
+    color: #D3D3D3;
+}
+body#result-html{
+    width: 500px;
+    height: 400px;
+    font-family: sans-serif;
+    font-size: 12px;
+    background-color: #fff;
+    color: #D3D3D3;
+}
+
+div + div {
+    margin-top: 10px;
+}
+
+.CodeMirror * {
+    margin-top: 0 !important;
+}
+
+label {
+    /* width: 25px; */
+    font-size: 1.4em;
+    display: inline-block;
+}
+
+label.section-label {
+    margin-left: 2.5vw;
+}
+
+textarea {
+    display: block;
+    font: 1.2em sans-serif;
+    width: 95vw;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    background-color: #303030;
+    color: white;
+    margin: 0 auto;
+}
+
+textarea#code {
+    height: 50vh;
+}
+
+textarea#input {
+    height: 15vh;
+}
+
+.compile-buttons {
+    float: right;
+    margin-right: 2.5vw;
+}
+.return-button{
+    text-align: center;
+    position: relative;
+    top: 50%;
+}
+
+select#lang {
+    width: auto;
+    margin-left: .5em;
+    border: 1px solid #999;
+    color: black;
+    display: inline-block;
+}
+
+#toggle {
+    display: inline-block;
+    position: relative;
+    width: 45px;
+}
+
+#navbar-onoff {
+    margin-left: -0.8vw;
+}
+
+.onoffswitch {
+    position: relative; width: 47px; top: 2px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 0.5px solid rgb(10, 10, 10); border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 15px; padding: 0; line-height: 15px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "";
+    padding-left: 10px;
+    background-color: #2189DE; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "";
+    padding-right: 10px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 18px; margin: -2px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 34px;
+    border: 1px solid #999999; border-radius: 15px;
+    transition: all 0.3s ease-in 0s;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
+
+.titlebar {
+    position: absolute;
+    z-index: 100;
+    width: 200px;
+    top: 12px;
+    left: calc(50% - 100px);
+    text-align: center;
+    font-size: 20px;
+    font-family: sans-serif;
+    letter-spacing: 0.8px;
+}
+
+.mr-1 {
+    margin-right: 0.5em;
+}
+
+.mr-2 {
+    margin-right: 1em;
+}
+
+.CodeMirror {
+    width: 95vw;
+    margin: 0 auto;
+    border: 1px solid #999;
+}
