@@ -31,6 +31,21 @@ function isDomainBlacklisted() {
     return blacklist.some(d => location.hostname.includes(d));
 }
 
+
+// Determine fix or change style
+function fixStyle() {
+    if (document.getElementsByTagName("pre").length > 0 || document.getElementsByTagName("code").length > 0) {
+        return true;
+    }
+
+    if (document.getElementsByClassName("se-code").length > 0) {
+        return true;
+    }
+
+    return false;
+}
+
+
 // Detect C code and wrap it with code element.
 function autoDetectC() {
     var codeBeginPatterns = [
@@ -64,6 +79,8 @@ function autoDetectC() {
     // If the website is not supported, stop detecting.
     if (isDomainBlacklisted())
         return;
+
+    var fix = fixStyle();
 
     // Fill beginChecks array.
     textNodes = getAllChildTextNodes(document.body);
@@ -102,19 +119,29 @@ function autoDetectC() {
             // Change style and save code.
             for (j = beginIdx; j <= i; j++) {
                 node = textNodes[j];
-                newParent = document.createElement("code");
                 codeCollection[codeCollection.length - 1] += node.nodeValue + "\n";
-                newParent.className = "codify codify-code codify-c-code cpp";
-                if (j === beginIdx)
-                    newParent.id = "codify-c-code-" + codeNumber;
-                newParent.style.display = "inline";
-                newParent.style.padding = "0";
-                newParent.style.margin = "0";
-                newParent.style.background = "transparent";
-                newParent.textContent = node.nodeValue;
-                newParent.style.fontFamily = "'Codify Source Code Pro'";
-                newParent.style.letterSpacing = "-0.7px";
-                node.replaceWith(newParent);
+                if (fix) {
+                    newParent = document.createElement("span");
+                    if (j === beginIdx)
+                        newParent.id = "codify-c-code-" + codeNumber;
+                    newParent.className = "codify codify-code codify-c-code cpp";
+                    newParent.textContent = node.nodeValue;
+                    node.replaceWith(newParent);
+                }
+                else {
+                    newParent = document.createElement("code");
+                    if (j === beginIdx)
+                        newParent.id = "codify-c-code-" + codeNumber;
+                    newParent.className = "codify codify-code codify-c-code cpp";
+                    newParent.style.padding = "0";
+                    newParent.style.margin = "0";
+                    newParent.style.background = "transparent";
+                    newParent.style.fontFamily = "'Codify Source Code Pro'";
+                    newParent.style.letterSpacing = "-0.7px";
+                    newParent.style.display = "inline";
+                    newParent.textContent = node.nodeValue;
+                    node.replaceWith(newParent);
+                }
             }
 
             // A little auto indenting & save to global object.
@@ -124,7 +151,8 @@ function autoDetectC() {
     }
 
     // Highlight found area.
-    document.querySelectorAll('.codify').forEach(block => hljs.highlightBlock(block));
+    if (!fix)
+        document.querySelectorAll('.codify').forEach(block => hljs.highlightBlock(block));
 
     // Add "Edit with Codify" button.
     for (i = 1; i <= codeNumber; i++)
