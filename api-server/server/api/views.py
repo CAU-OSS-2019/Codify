@@ -31,6 +31,9 @@ class Compile(View):
             # only support c language & cpp language
             if request_json.get("lang") == "c" or request_json.get("lang") == "cpp":
                 pass
+            # add python3.7
+            elif request_json.get("lang") == "python":
+                pass
             else:
                 raise ValueError
 

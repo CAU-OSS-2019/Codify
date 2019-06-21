@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='source',
             name='lang',
-            field=models.CharField(choices=[('c', 'C11'), ('cpp', 'C++17')], max_length=10),
+            field=models.CharField(choices=[('c', 'C11'), ('cpp', 'C++17'), ('python','python3.7')], max_length=10),
         ),
     ]

@@ -4,6 +4,7 @@ class Source(models.Model):
     LANG_CHOICES = (
         ("c", "C11"),
         ("cpp", "C++17"),
+        ("python","python3.7")
     )
     STATUS_CHOICES = (
         (1, "OK"),
