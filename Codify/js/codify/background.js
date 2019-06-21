@@ -13,6 +13,9 @@ browser.runtime.onInstalled.addListener(function () {
     // initialize auto highlight to true
     browser.storage.sync.set({ 'autoHighlight': true });
 
+    // initialize theme. default is black.
+    browser.storage.sync.set({ 'theme' : "black" });
+
     // create 'Overwrite to Codify' contextMenus
     browser.contextMenus.create({
         "id": "overwriteCode",

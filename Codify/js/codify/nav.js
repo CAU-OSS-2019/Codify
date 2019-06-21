@@ -5,47 +5,9 @@ if (typeof browser === "undefined")
     var browser = chrome;
 
 import {
-    saveStorage,
-    load2Element
-} from "/js/codify/storage.js";
-    
-import {
     noti,
     changePopup
 } from "/js/codify/util.js";
-
-
-let themeCSS = document.getElementById("theme");
-let themeColor = "black"
-
-load2Element(themeCSS, 'theme', function (elem, data) {
-    if (data !== undefined){
-        setTheme(data)
-    }
-});
-
-function setTheme(color){
-    if (color == "black"){
-        themeCSS.href = "/css/codify/style_black.css"
-        themeColor = "black"
-    }
-    else if(color == "white"){
-        themeCSS.href = "/css/codify/style_white.css"
-        themeColor = "white"
-    }
-    saveStorage({
-        theme:themeColor
-    });
-}
-
-function changeTheme() {
-    if(themeColor == "black"){
-        setTheme("white")
-    }
-    else if (themeColor == "white"){
-        setTheme("black")
-    }
-}
 
 $(document).ready(function () {
     $("#a-selector").click(function () {
@@ -83,8 +45,8 @@ $(document).ready(function () {
         changePopup("/html/history.html");
     });
 
-    $("#a-change-theme").click(function () {
-        changeTheme();
+    $("#a-setting").click(function(){
+        changePopup("/html/setting.html");
     });
 
 });

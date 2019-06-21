@@ -6,6 +6,9 @@ import {
     load2Element
 } from "/js/codify/storage.js";
 
+import {
+    setTheme
+} from "/js/codify/set_theme.js";
 
 let highlightSwitch = document.getElementById('myonoffswitch');
 
@@ -23,3 +26,15 @@ highlightSwitch.onclick = function () {
         autoHighlight: highlightSwitch.checked
     });
 };
+
+
+
+// get theme of current page.
+let themeCSS = document.getElementById("theme");
+
+// set Theme of current page to stored theme
+load2Element(themeCSS, 'theme', function (elem, data) {
+    if (data !== undefined){
+        setTheme(data)
+    }
+});
