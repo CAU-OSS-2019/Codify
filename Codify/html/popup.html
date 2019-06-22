@@ -18,7 +18,7 @@
       <script src="/mirror/mode/meta.js"></script>
       <!-- custom -->
       <link rel="stylesheet" type="text/css" href="/css/codify/all.css">
-      <link rel="stylesheet" type="text/css" href="/css/codify/style.css">
+      <link rel="stylesheet" id="theme" type="text/css" href="/css/codify/style_black.css">
   </head>
 
   <body>
@@ -49,7 +49,7 @@
             <li class="active"><a id="a-editor" href="#">Editor</a></li>
             <li><a id="a-selector" href="#">Selector</a></li>
             <li><a id="a-logger" href="#">Logger</a></li>
-            <li><a href="#">Setting</a></li>
+              <li><a id="a-setting">Setting</a></li>
           </ul>
         </div>
       </div>
@@ -61,6 +61,7 @@
         <select id="lang" class="form-control" size="1">
           <option id="c" selected>C (gcc -std=c11)</option>
           <option id="cpp">C++ (g++ -std=gnu++14)</option>
+          <option id="python">python (python 3.7)</option>
         </select>
         <div class="compile-buttons">
           <button id="compile" class="btn btn-success" type="button"><i class="fas fa-play mr-1"></i>Run</button>

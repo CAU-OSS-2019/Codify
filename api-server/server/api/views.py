@@ -4,7 +4,9 @@ from django.http.response import HttpResponse
 from django.views.generic.base import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from . import models, compile_tasks
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+from . import models, compile_tasks, utils
 
 
 # Main View
@@ -29,14 +31,25 @@ class Compile(View):
             # only support c language & cpp language
             if request_json.get("lang") == "c" or request_json.get("lang") == "cpp":
                 pass
+            # add python3.7
+            elif request_json.get("lang") == "python":
+                pass
             else:
                 raise ValueError
+
+            # prevent too many requests
+            client_ip = utils.get_real_ip(request)
+            base_datetime = timezone.now() - timezone.timedelta(seconds=1)
+            if models.Source.objects.filter(ip=client_ip, created_date__gte=base_datetime).exists():
+                raise ValidationError("Too many requests")
 
             # save model instance
             source = models.Source()
             source.lang = request_json.get("lang")
             source.code = request_json.get("code")
             source.stdin = request_json.get("stdin", "")
+            source.ip = client_ip
+            source.full_clean()
             source.save()
 
             # activate background compile tasks (async)
@@ -79,3 +92,18 @@ class CompileResult(View):
             response = HttpResponse(result, status=status_code)
             response["Content-Type"] = "application/json; charset=utf-8"
             return response
+
+
+# Get Supported Language API View
+class SupportedLanguage(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = json.dumps([i[0] for i in models.Source.LANG_CHOICES])
+
+        except:
+            return HttpResponse("404 Not Found", status=404)
+
+        # return response with json header
+        response = HttpResponse(result)
+        response["Content-Type"] = "application/json; charset=utf-8"
+        return response

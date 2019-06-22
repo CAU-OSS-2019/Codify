@@ -8,7 +8,7 @@
 ## 서버 설치법
 1. 먼저 python3, pip3(또는 pip), docker를 모두 설치하세요.
 2. `api-server/server` 디렉토리로 들어와주세요. (manage.py가 있는 디렉토리입니다.)
-3. `pip3 install -r requirements.txt` 로 파이썬 패키지를 설치하세요. (pip을 사용하셔도 됩니다.)
+3. `pip3 install -r requirements.txt` 로 파이썬 패키지를 설치하세요. (python3 패키지 관리자로 pip3이 아닌 pip을 설치했다면 pip을 사용)
 4. `python3 manage.py migrate` 로 DB 스키마를 생성하세요. 기본값으로 sqlite3을 사용합니다.
 5. `sudo ./docker-build-full.sh` 로 docker image를 생성하세요.
 
@@ -106,4 +106,19 @@
 {
   "success": false
 }
+```
+
+### GET /api/lang
+설명 : 서버에서 지원하는 언어 리스트를 반환합니다.
+
+#### Response
+서버에서 지원하는 언어들을 포함한 리스트 1개가 반환됩니다.  
+리스트는 {}가 아니라 []로 표현된다는 점을 주의해주세요.
+
+#### Response Example
+```
+[
+  "c",
+  "cpp"
+]
 ```

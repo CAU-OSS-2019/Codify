@@ -21,17 +21,41 @@ function addRunButton(codeNumber) {
     btnLoc.insertBefore(runBtn, btnLoc.firstChild);
 }
 
+// Check if current page's domain is in the blacklist.
+function isDomainBlacklisted() {
+    var blacklist = [
+        "stackoverflow.com",
+        "github.com"
+    ];
+
+    return blacklist.some(d => location.hostname.includes(d));
+}
+
+
+// Determine fix or change style
+function fixStyle() {
+    if (document.getElementsByTagName("pre").length > 0 || document.getElementsByTagName("code").length > 0) {
+        return true;
+    }
+
+    if (document.getElementsByClassName("se-code").length > 0) {
+        return true;
+    }
+
+    return false;
+}
+
+
 // Detect C code and wrap it with code element.
 function autoDetectC() {
     var codeBeginPatterns = [
-        // /^[ \t\u00a0\u00c2]*#[ \t\u00a0\u00c2]*include[ \t\u00a0\u00c2]*(<|")[^>"]+(>|")[ \t\u00a0\u00c2]*$/g,
-        /^[^\w가-힣ㄱ-ㅎ]*#[^\w가-힣ㄱ-ㅎ]*include/g,
-        /^[^\w가-힣ㄱ-ㅎ]*#[^\w가-힣ㄱ-ㅎ]*pragma[^\w가-힣ㄱ-ㅎ]+[a-zA-Z_]\w*/g,
-        /^[^\w가-힣ㄱ-ㅎ]*#[^\w가-힣ㄱ-ㅎ]*define[^\w가-힣ㄱ-ㅎ]+[a-zA-Z_]\w*/g,
-        /^[^\w가-힣ㄱ-ㅎ]*(bool|char|signed|unsigned|short|int|long|float|double|struct|union|void)[^\w가-힣ㄱ-ㅎ]+[a-zA-Z_]\w*[^\w가-힣ㄱ-ㅎ]*\(/g
+        /^\s*#\s*include/g,
+        /^\s*#\s*pragma\s+[a-zA-Z_]\w*/g,
+        /^\s*#\s*define\s+[a-zA-Z_]\w*/g,
+        /^\s*(bool|char|signed|unsigned|short|int|long|float|double|struct|union|void)\s+[a-zA-Z_]\w*\s*\(/g
     ];
 
-    var textNodes = getAllChildTextNodes(document.body);
+    var textNodes;
 
     var beginChecks = [];
     var endChecks = [];
@@ -52,9 +76,18 @@ function autoDetectC() {
 
     var i, j;
 
+    // If the website is not supported, stop detecting.
+    if (isDomainBlacklisted())
+        return;
+
+    var fix = fixStyle();
+
+    // Fill beginChecks array.
+    textNodes = getAllChildTextNodes(document.body);
     textNodes.forEach(node =>
         beginChecks.push(codeBeginPatterns.some(p => p.test(node.nodeValue))));
 
+    // Fill endChecks array.
     for (i = 0; i < textNodes.length; i++) {
         val = textNodes[i].nodeValue;
         openCount = (val.match(/{/g) || []).length;
@@ -66,10 +99,12 @@ function autoDetectC() {
             endChecks[i - 1] = beginChecks[i] = false;
     }
 
+    // Formatting
     for (i = 0; i < textNodes.length; i++) {
         if (codeBegan === false && beginChecks[i]) {
             codeBegan = true;
             beginIdx = i;
+            i--;
         } else if (codeBegan === true && endChecks[i]) {
             // Found some code.
             codeBegan = false;
@@ -84,19 +119,29 @@ function autoDetectC() {
             // Change style and save code.
             for (j = beginIdx; j <= i; j++) {
                 node = textNodes[j];
-                newParent = document.createElement("code");
                 codeCollection[codeCollection.length - 1] += node.nodeValue + "\n";
-                newParent.className = "codify codify-code codify-c-code cpp";
-                if (j === beginIdx)
-                    newParent.id = "codify-c-code-" + codeNumber;
-                newParent.style.display = "inline";
-                newParent.style.padding = "0";
-                newParent.style.margin = "0";
-                newParent.style.background = "transparent";
-                newParent.textContent = node.nodeValue;
-                newParent.style.fontFamily = "'Source Code Pro'";
-                newParent.style.letterSpacing = "-0.7px";
-                node.replaceWith(newParent);
+                if (fix) {
+                    newParent = document.createElement("span");
+                    if (j === beginIdx)
+                        newParent.id = "codify-c-code-" + codeNumber;
+                    newParent.className = "codify codify-code codify-c-code cpp";
+                    newParent.textContent = node.nodeValue;
+                    node.replaceWith(newParent);
+                }
+                else {
+                    newParent = document.createElement("code");
+                    if (j === beginIdx)
+                        newParent.id = "codify-c-code-" + codeNumber;
+                    newParent.className = "codify codify-code codify-c-code cpp";
+                    newParent.style.padding = "0";
+                    newParent.style.margin = "0";
+                    newParent.style.background = "transparent";
+                    newParent.style.fontFamily = "'Codify Source Code Pro'";
+                    newParent.style.letterSpacing = "-0.7px";
+                    newParent.style.display = "inline";
+                    newParent.textContent = node.nodeValue;
+                    node.replaceWith(newParent);
+                }
             }
 
             // A little auto indenting & save to global object.
@@ -106,20 +151,16 @@ function autoDetectC() {
     }
 
     // Highlight found area.
-    document.querySelectorAll('.codify').forEach(block => hljs.highlightBlock(block));
+    if (!fix)
+        document.querySelectorAll('.codify').forEach(block => hljs.highlightBlock(block));
 
+    // Add "Edit with Codify" button.
     for (i = 1; i <= codeNumber; i++)
         addRunButton(i);
 }
 
 // Init highlighting process.
 function init() {
-    var link = document.createElement("link");
-    link.href = "https://fonts.googleapis.com/css?family=Source+Code+Pro";
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    document.getElementsByTagName("head")[0].appendChild(link);
-
     hljs.initHighlightingOnLoad();
     hljs.configure({useBR: true});
     window.codeCollection = [];
