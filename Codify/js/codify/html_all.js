@@ -1,5 +1,7 @@
 'use strict';
 
+if (typeof browser === "undefined")
+    var browser = chrome;
 
 import {
     saveStorage,
@@ -22,4 +24,6 @@ highlightSwitch.onclick = function () {
     saveStorage({
         autoHighlight: highlightSwitch.checked
     });
+        
+    browser.tabs.reload();
 };
